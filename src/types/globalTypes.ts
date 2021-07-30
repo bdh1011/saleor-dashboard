@@ -990,6 +990,12 @@ export enum VoucherTypeEnum {
   SPECIFIC_PRODUCT = "SPECIFIC_PRODUCT",
 }
 
+export enum WarehouseClickAndCollectOptionEnum {
+  ALL = "ALL",
+  DISABLED = "DISABLED",
+  LOCAL = "LOCAL",
+}
+
 export enum WarehouseErrorCode {
   ALREADY_EXISTS = "ALREADY_EXISTS",
   GRAPHQL_ERROR = "GRAPHQL_ERROR",
@@ -1791,6 +1797,7 @@ export interface SaleFilterInput {
   saleType?: DiscountValueTypeEnum | null;
   started?: DateTimeRangeInput | null;
   search?: string | null;
+  metadata?: (MetadataFilter | null)[] | null;
 }
 
 export interface SaleInput {
@@ -1972,6 +1979,7 @@ export interface VoucherFilterInput {
   discountType?: (VoucherDiscountType | null)[] | null;
   started?: DateTimeRangeInput | null;
   search?: string | null;
+  metadata?: (MetadataFilter | null)[] | null;
 }
 
 export interface VoucherInput {
@@ -2006,8 +2014,10 @@ export interface WarehouseCreateInput {
 }
 
 export interface WarehouseFilterInput {
+  clickAndCollectOption?: WarehouseClickAndCollectOptionEnum | null;
   search?: string | null;
   ids?: (string | null)[] | null;
+  isPrivate?: boolean | null;
 }
 
 export interface WarehouseSortingInput {
@@ -2020,6 +2030,8 @@ export interface WarehouseUpdateInput {
   email?: string | null;
   name?: string | null;
   address?: AddressInput | null;
+  clickAndCollectOption?: WarehouseClickAndCollectOptionEnum | null;
+  isPrivate?: boolean | null;
 }
 
 export interface WebhookCreateInput {
