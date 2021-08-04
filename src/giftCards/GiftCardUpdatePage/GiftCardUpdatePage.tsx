@@ -1,5 +1,7 @@
+import CardSpacer from "@saleor/components/CardSpacer";
 import Container from "@saleor/components/Container";
 import Grid from "@saleor/components/Grid";
+import Metadata from "@saleor/components/Metadata";
 import Savebar from "@saleor/components/Savebar";
 import useNavigator from "@saleor/hooks/useNavigator";
 import createDialogActionHandlers from "@saleor/utils/handlers/dialogActionHandlers";
@@ -45,42 +47,50 @@ const GiftCardUpdatePage: React.FC<GiftCardUpdatePageProps> = ({
   return (
     <GiftCardDetailsProvider id={id}>
       <GiftCardUpdateFormProvider onBalanceUpdateSuccess={closeModal}>
-        <Container>
-          <GiftCardUpdatePageHeader onBack={navigateBack} />
-          <Grid>
-            <div>
-              <GiftCardUpdateDetailsCard
-                onSetBalanceButtonClick={openSetBalanceDialog}
-              />
-            </div>
-            <div>
-              <GiftCardUpdateInfoCard />
-            </div>
-          </Grid>
+        <GiftCardUpdateFormContext.Consumer>
+          {({
+            opts: { loading, status },
+            hasChanged,
+            submit,
+            data,
+            handlers: { changeMetadata }
+          }) => (
+            <Container>
+              <GiftCardUpdatePageHeader onBack={navigateBack} />
+              <Grid>
+                <div>
+                  <GiftCardUpdateDetailsCard
+                    onSetBalanceButtonClick={openSetBalanceDialog}
+                  />
+                  <CardSpacer />
+                  <Metadata data={data} onChange={changeMetadata} />
+                </div>
+                <div>
+                  <GiftCardUpdateInfoCard />
+                </div>
+              </Grid>
 
-          <GiftCardDetailsContext.Consumer>
-            {({ loading, giftCard }) =>
-              !loading &&
-              giftCard && (
-                <GiftCardUpdateBalanceDialog
-                  onClose={closeModal}
-                  action={params?.action}
-                />
-              )
-            }
-          </GiftCardDetailsContext.Consumer>
+              <GiftCardDetailsContext.Consumer>
+                {({ loading, giftCard }) =>
+                  !loading &&
+                  giftCard && (
+                    <GiftCardUpdateBalanceDialog
+                      onClose={closeModal}
+                      action={params?.action}
+                    />
+                  )
+                }
+              </GiftCardDetailsContext.Consumer>
 
-          <GiftCardUpdateFormContext.Consumer>
-            {({ opts: { loading, status }, hasChanged, submit }) => (
               <Savebar
                 state={status}
                 disabled={loading || !hasChanged}
                 onCancel={navigateBack}
                 onSubmit={submit}
               />
-            )}
-          </GiftCardUpdateFormContext.Consumer>
-        </Container>
+            </Container>
+          )}
+        </GiftCardUpdateFormContext.Consumer>
       </GiftCardUpdateFormProvider>
     </GiftCardDetailsProvider>
   );
