@@ -6653,6 +6653,9 @@
   "src_dot_taxes_dot_views_dot_2411670026": {
     "string": "Successfully fetched tax rates"
   },
+  "src_dot_translationAttributes": {
+    "string": "Attributes"
+  },
   "src_dot_translations": {
     "context": "translations section name",
     "string": "Translations"
