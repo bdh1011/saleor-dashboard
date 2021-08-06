@@ -957,6 +957,14 @@
     "context": "boolean attribute type",
     "string": "Boolean"
   },
+  "src_dot_attributes_dot_components_dot_AttributeDetails_dot_date": {
+    "context": "date attribute type",
+    "string": "Date"
+  },
+  "src_dot_attributes_dot_components_dot_AttributeDetails_dot_dateTime": {
+    "context": "date time attribute type",
+    "string": "Date Time"
+  },
   "src_dot_attributes_dot_components_dot_AttributeDetails_dot_distance": {
     "context": "distance units type",
     "string": "Distance"
@@ -2756,6 +2764,9 @@
   },
   "src_dot_dashboard": {
     "string": "Dashboard"
+  },
+  "src_dot_date": {
+    "string": "Date"
   },
   "src_dot_delete": {
     "context": "button",
@@ -6655,6 +6666,9 @@
   },
   "src_dot_translationAttributes": {
     "string": "Attributes"
+  "src_dot_time": {
+    "context": "independent of any particular day, eg. 11:35",
+    "string": "Time"
   },
   "src_dot_translations": {
     "context": "translations section name",
@@ -7245,6 +7259,10 @@
     "context": "event",
     "string": "Order created"
   },
+  "src_dot_webhooks_dot_components_dot_WebhookEvents_dot_36047288": {
+    "context": "event",
+    "string": "Translation created"
+  },
   "src_dot_webhooks_dot_components_dot_WebhookEvents_dot_3617444329": {
     "context": "event",
     "string": "Order cancelled"
@@ -7284,6 +7302,10 @@
   "src_dot_webhooks_dot_components_dot_WebhookEvents_dot_4292269645": {
     "context": "event",
     "string": "Process payment"
+  },
+  "src_dot_webhooks_dot_components_dot_WebhookEvents_dot_482477254": {
+    "context": "event",
+    "string": "Translation updated"
   },
   "src_dot_webhooks_dot_components_dot_WebhookEvents_dot_679080833": {
     "context": "event",
