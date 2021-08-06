@@ -206,6 +206,9 @@ const AttributeDetails: React.FC<AttributeDetailsProps> = ({ params }) => {
               sortOrder: valueIndex,
               value: null,
               richText: null,
+              boolean: null,
+              date: null,
+              dateTime: null,
               ...value
             }
           }))

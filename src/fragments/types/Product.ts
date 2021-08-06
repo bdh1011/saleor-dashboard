@@ -31,6 +31,9 @@ export interface Product_attributes_attribute_choices_edges_node {
   file: Product_attributes_attribute_choices_edges_node_file | null;
   reference: string | null;
   richText: any | null;
+  boolean: boolean | null;
+  date: any | null;
+  dateTime: any | null;
 }
 
 export interface Product_attributes_attribute_choices_edges {
@@ -71,6 +74,9 @@ export interface Product_attributes_values {
   file: Product_attributes_values_file | null;
   reference: string | null;
   richText: any | null;
+  boolean: boolean | null;
+  date: any | null;
+  dateTime: any | null;
 }
 
 export interface Product_attributes {
@@ -101,6 +107,9 @@ export interface Product_productType_variantAttributes_choices_edges_node {
   file: Product_productType_variantAttributes_choices_edges_node_file | null;
   reference: string | null;
   richText: any | null;
+  boolean: boolean | null;
+  date: any | null;
+  dateTime: any | null;
 }
 
 export interface Product_productType_variantAttributes_choices_edges {
@@ -119,6 +128,8 @@ export interface Product_productType_variantAttributes {
   __typename: "Attribute";
   id: string;
   name: string | null;
+  inputType: AttributeInputTypeEnum | null;
+  unit: MeasurementUnitsEnum | null;
   choices: Product_productType_variantAttributes_choices | null;
 }
 

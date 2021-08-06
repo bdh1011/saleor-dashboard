@@ -8,7 +8,7 @@ import {
 import ResponsiveTable from "@saleor/components/ResponsiveTable";
 import Skeleton from "@saleor/components/Skeleton";
 import TablePagination from "@saleor/components/TablePagination";
-import { makeStyles } from "@saleor/theme";
+import { makeStyles } from "@saleor/macaw-ui";
 import classNames from "classnames";
 import React from "react";
 import { FormattedMessage, useIntl } from "react-intl";
@@ -102,17 +102,18 @@ const TranslationsEntitiesList: React.FC<TranslationsEntitiesListProps> = props 
             >
               <TableCell>{entity?.name || <Skeleton />}</TableCell>
               <TableCell className={classes.textRight}>
-                {maybe<React.ReactNode>(
-                  () =>
-                    intl.formatMessage(
-                      {
-                        defaultMessage: "{current} of {max}",
-                        description: "translation progress"
-                      },
-                      entity.completion
-                    ),
-                  <Skeleton />
-                )}
+                {!!entity?.completion &&
+                  maybe<React.ReactNode>(
+                    () =>
+                      intl.formatMessage(
+                        {
+                          defaultMessage: "{current} of {max}",
+                          description: "translation progress"
+                        },
+                        entity.completion
+                      ),
+                    <Skeleton />
+                  )}
               </TableCell>
             </TableRow>
           ),

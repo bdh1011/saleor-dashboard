@@ -1,10 +1,16 @@
 import { IFilter } from "@saleor/components/Filter";
-import { MultiAutocompleteChoiceType } from "@saleor/components/MultiAutocompleteSelectField";
-import { sectionNames } from "@saleor/intl";
+import { SingleAutocompleteChoiceType } from "@saleor/components/SingleAutocompleteSelectField";
+import { commonMessages, sectionNames } from "@saleor/intl";
 import { AutocompleteFilterOpts, FilterOpts, MinMax } from "@saleor/types";
-import { StockAvailability } from "@saleor/types/globalTypes";
+import {
+  AttributeInputTypeEnum,
+  StockAvailability
+} from "@saleor/types/globalTypes";
 import {
   createAutocompleteField,
+  createBooleanField,
+  createDateField,
+  createDateTimeField,
   createOptionsField,
   createPriceField
 } from "@saleor/utils/filters/fields";
@@ -16,28 +22,36 @@ export enum ProductFilterKeys {
   collections = "collections",
   price = "price",
   productType = "productType",
-  stock = "stock"
+  stock = "stock",
+  channel = "channel"
 }
 
+export type AttributeFilterOpts = FilterOpts<string[]> & {
+  id: string;
+  name: string;
+  slug: string;
+  inputType: AttributeInputTypeEnum;
+};
+
 export interface ProductListFilterOpts {
-  attributes: Array<
-    FilterOpts<string[]> & {
-      choices: MultiAutocompleteChoiceType[];
-      name: string;
-      slug: string;
-    }
-  >;
+  attributes: AttributeFilterOpts[];
+  attributeChoices: FilterOpts<string[]> & AutocompleteFilterOpts;
   categories: FilterOpts<string[]> & AutocompleteFilterOpts;
   collections: FilterOpts<string[]> & AutocompleteFilterOpts;
   price: FilterOpts<MinMax>;
   productType: FilterOpts<string[]> & AutocompleteFilterOpts;
   stockStatus: FilterOpts<StockAvailability>;
+  channel: FilterOpts<string> & { choices: SingleAutocompleteChoiceType[] };
 }
 
 const messages = defineMessages({
   available: {
     defaultMessage: "Available",
     description: "product status"
+  },
+  channel: {
+    defaultMessage: "Channel",
+    description: "sales channel"
   },
   hidden: {
     defaultMessage: "Hidden",
@@ -64,11 +78,46 @@ const messages = defineMessages({
   }
 });
 
+const filterByType = (type: AttributeInputTypeEnum) => (
+  attribute: AttributeFilterOpts
+) => attribute.inputType === type;
+
 export function createFilterStructure(
   intl: IntlShape,
   opts: ProductListFilterOpts
-): IFilter<ProductFilterKeys> {
+): IFilter<string> {
+  const attributes = opts.attributes;
+
+  const booleanAttributes = attributes.filter(
+    filterByType(AttributeInputTypeEnum.BOOLEAN)
+  );
+  const dateAttributes = attributes.filter(
+    filterByType(AttributeInputTypeEnum.DATE)
+  );
+  const dateTimeAttributes = attributes.filter(
+    filterByType(AttributeInputTypeEnum.DATE_TIME)
+  );
+
+  const defaultAttributes = opts.attributes.filter(
+    ({ inputType }) =>
+      ![
+        AttributeInputTypeEnum.BOOLEAN,
+        AttributeInputTypeEnum.DATE,
+        AttributeInputTypeEnum.DATE_TIME
+      ].includes(inputType)
+  );
+
   return [
+    {
+      ...createOptionsField(
+        ProductFilterKeys.channel,
+        intl.formatMessage(messages.channel),
+        [opts.channel.value],
+        false,
+        opts.channel.choices
+      ),
+      active: opts.channel.active
+    },
     {
       ...createOptionsField(
         ProductFilterKeys.stock,
@@ -86,7 +135,8 @@ export function createFilterStructure(
           }
         ]
       ),
-      active: opts.stockStatus.active
+      active: opts.stockStatus.active,
+      dependencies: [ProductFilterKeys.channel]
     },
     {
       ...createPriceField(
@@ -150,13 +200,53 @@ export function createFilterStructure(
       ),
       active: opts.productType.active
     },
-    ...opts.attributes.map(attr => ({
-      ...createOptionsField(
-        attr.slug as any,
+    ...booleanAttributes.map(attr => ({
+      ...createBooleanField(
+        attr.slug,
+        attr.name,
+        Array.isArray(attr.value)
+          ? undefined
+          : (attr.value as unknown) === "true",
+        {
+          positive: intl.formatMessage(commonMessages.yes),
+          negative: intl.formatMessage(commonMessages.no)
+        }
+      ),
+      active: attr.active,
+      group: ProductFilterKeys.attributes
+    })),
+    ...dateAttributes.map(attr => ({
+      ...createDateField(attr.slug, attr.name, {
+        min: attr.value[0],
+        max: attr.value[1] ?? attr.value[0]
+      }),
+      active: attr.active,
+      group: ProductFilterKeys.attributes
+    })),
+    ...dateTimeAttributes.map(attr => ({
+      ...createDateTimeField(attr.slug, attr.name, {
+        min: attr.value[0],
+        max: attr.value[1] ?? attr.value[0]
+      }),
+      active: attr.active,
+      group: ProductFilterKeys.attributes
+    })),
+    ...defaultAttributes.map(attr => ({
+      ...createAutocompleteField(
+        attr.slug,
         attr.name,
         attr.value,
+        opts.attributeChoices.displayValues,
         true,
-        attr.choices
+        opts.attributeChoices.choices,
+        {
+          hasMore: opts.attributeChoices.hasMore,
+          initialSearch: "",
+          loading: opts.attributeChoices.loading,
+          onFetchMore: opts.attributeChoices.onFetchMore,
+          onSearchChange: opts.attributeChoices.onSearchChange
+        },
+        attr.id
       ),
       active: attr.active,
       group: ProductFilterKeys.attributes

@@ -31,6 +31,9 @@ export interface PageDetailsFragment_attributes_attribute_choices_edges_node {
   file: PageDetailsFragment_attributes_attribute_choices_edges_node_file | null;
   reference: string | null;
   richText: any | null;
+  boolean: boolean | null;
+  date: any | null;
+  dateTime: any | null;
 }
 
 export interface PageDetailsFragment_attributes_attribute_choices_edges {
@@ -71,6 +74,9 @@ export interface PageDetailsFragment_attributes_values {
   file: PageDetailsFragment_attributes_values_file | null;
   reference: string | null;
   richText: any | null;
+  boolean: boolean | null;
+  date: any | null;
+  dateTime: any | null;
 }
 
 export interface PageDetailsFragment_attributes {
@@ -101,6 +107,9 @@ export interface PageDetailsFragment_pageType_attributes_choices_edges_node {
   file: PageDetailsFragment_pageType_attributes_choices_edges_node_file | null;
   reference: string | null;
   richText: any | null;
+  boolean: boolean | null;
+  date: any | null;
+  dateTime: any | null;
 }
 
 export interface PageDetailsFragment_pageType_attributes_choices_edges {

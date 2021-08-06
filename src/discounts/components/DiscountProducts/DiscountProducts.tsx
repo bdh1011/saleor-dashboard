@@ -17,20 +17,17 @@ import TableCellAvatar from "@saleor/components/TableCellAvatar";
 import { AVATAR_MARGIN } from "@saleor/components/TableCellAvatar/Avatar";
 import TableHead from "@saleor/components/TableHead";
 import TablePagination from "@saleor/components/TablePagination";
-import { makeStyles } from "@saleor/theme";
+import { makeStyles } from "@saleor/macaw-ui";
 import { mapEdgesToItems } from "@saleor/utils/maps";
 import React from "react";
 import { FormattedMessage, useIntl } from "react-intl";
 
 import { maybe, renderCollection } from "../../../misc";
-import { ChannelProps, ListActions, ListProps } from "../../../types";
+import { ListActions, ListProps } from "../../../types";
 import { SaleDetails_sale } from "../../types/SaleDetails";
 import { VoucherDetails_voucher } from "../../types/VoucherDetails";
 
-export interface SaleProductsProps
-  extends ListProps,
-    ListActions,
-    ChannelProps {
+export interface SaleProductsProps extends ListProps, ListActions {
   discount: SaleDetails_sale | VoucherDetails_voucher;
   channelsCount: number;
   onProductAssign: () => void;
@@ -43,14 +40,14 @@ const useStyles = makeStyles(
       "&:last-child": {
         paddingRight: 0
       },
-      width: 76 + theme.spacing(0.5)
+      width: `calc(76px + ${theme.spacing(0.5)})`
     },
     colName: {
       paddingLeft: 0,
       width: "auto"
     },
     colNameLabel: {
-      marginLeft: AVATAR_MARGIN + theme.spacing(3)
+      marginLeft: `calc(${AVATAR_MARGIN}px + ${theme.spacing(3)})`
     },
     colPublished: {
       width: 150
@@ -83,7 +80,6 @@ const DiscountProducts: React.FC<SaleProductsProps> = props => {
     onNextPage,
     isChecked,
     selected,
-    selectedChannelId,
     toggle,
     toggleAll,
     toolbar
@@ -162,10 +158,7 @@ const DiscountProducts: React.FC<SaleProductsProps> = props => {
             mapEdgesToItems(sale?.products),
             product => {
               const isSelected = product ? isChecked(product.id) : false;
-              const channel =
-                product?.channelListings.find(
-                  listing => listing.channel.id === selectedChannelId
-                ) || product?.channelListings[0];
+
               return (
                 <TableRow
                   hover={!!product}
@@ -200,7 +193,6 @@ const DiscountProducts: React.FC<SaleProductsProps> = props => {
                     ) : product?.channelListings !== undefined ? (
                       <ChannelsAvailabilityDropdown
                         allChannelsCount={channelsCount}
-                        currentChannel={channel}
                         channels={product?.channelListings}
                       />
                     ) : (

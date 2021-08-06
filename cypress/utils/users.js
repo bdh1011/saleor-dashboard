@@ -1,5 +1,5 @@
 import { getPermissionsArray } from "../apiRequests/permissions";
-import { inviteStaffMember } from "../apiRequests/staffMember";
+import { inviteStaffMember } from "../apiRequests/StaffMembers";
 
 export function inviteStaffMemberWithFirstPermission({
   email,
@@ -28,6 +28,7 @@ export function getMailActivationLinkForUser(email, i = 0) {
   }
   return cy.mhGetMailsByRecipient(email).should(mails => {
     if (!mails.length) {
+      cy.wait(10000);
       getMailActivationLinkForUser(email, i + 1);
     } else {
       cy.wrap(mails)

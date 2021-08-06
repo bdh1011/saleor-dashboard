@@ -1,6 +1,5 @@
 import { Typography } from "@material-ui/core";
 import { ChannelVoucherData } from "@saleor/channels/utils";
-import AppHeader from "@saleor/components/AppHeader";
 import CardSpacer from "@saleor/components/CardSpacer";
 import ChannelsAvailabilityCard from "@saleor/components/ChannelsAvailabilityCard";
 import { ConfirmButtonTransitionState } from "@saleor/components/ConfirmButton";
@@ -8,8 +7,9 @@ import Container from "@saleor/components/Container";
 import CountryList from "@saleor/components/CountryList";
 import Form from "@saleor/components/Form";
 import Grid from "@saleor/components/Grid";
+import Metadata, { MetadataFormData } from "@saleor/components/Metadata";
 import PageHeader from "@saleor/components/PageHeader";
-import SaveButtonBar from "@saleor/components/SaveButtonBar";
+import Savebar from "@saleor/components/Savebar";
 import { Tab, TabContainer } from "@saleor/components/Tab";
 import {
   createChannelsChangeHandler,
@@ -18,7 +18,10 @@ import {
 import { DiscountTypeEnum, RequirementsPicker } from "@saleor/discounts/types";
 import { DiscountErrorFragment } from "@saleor/fragments/types/DiscountErrorFragment";
 import { sectionNames } from "@saleor/intl";
+import { Backlink } from "@saleor/macaw-ui";
 import { validatePrice } from "@saleor/products/utils/validation";
+import { mapMetadataItemToInput } from "@saleor/utils/maps";
+import useMetadataChangeTrigger from "@saleor/utils/metadata/useMetadataChangeTrigger";
 import React from "react";
 import { FormattedMessage, useIntl } from "react-intl";
 
@@ -55,9 +58,10 @@ export function voucherDetailsPageTab(tab: string): VoucherDetailsPageTab {
     : VoucherDetailsPageTab.categories;
 }
 
-export interface VoucherDetailsPageFormData {
+export interface VoucherDetailsPageFormData extends MetadataFormData {
   applyOncePerCustomer: boolean;
   applyOncePerOrder: boolean;
+  onlyForStaff: boolean;
   channelListings: ChannelVoucherData[];
   code: string;
   discountType: DiscountTypeEnum;
@@ -148,6 +152,9 @@ const VoucherDetailsPage: React.FC<VoucherDetailsPageProps> = ({
   productListToolbar
 }) => {
   const intl = useIntl();
+  const {
+    makeChangeHandler: makeMetadataChangeHandler
+  } = useMetadataChangeTrigger();
   const channel = voucher?.channelListings?.find(
     listing => listing.channel.id === selectedChannelId
   );
@@ -170,22 +177,23 @@ const VoucherDetailsPage: React.FC<VoucherDetailsPageProps> = ({
   const initialForm: VoucherDetailsPageFormData = {
     applyOncePerCustomer: voucher?.applyOncePerCustomer || false,
     applyOncePerOrder: voucher?.applyOncePerOrder || false,
+    onlyForStaff: voucher?.onlyForStaff || false,
     channelListings,
     code: voucher?.code || "",
     discountType,
-    endDate: splitDateTime(maybe(() => voucher.endDate, "")).date,
-    endTime: splitDateTime(maybe(() => voucher.endDate, "")).time,
-    hasEndDate: maybe(() => !!voucher.endDate),
-    hasUsageLimit: maybe(() => !!voucher.usageLimit),
-    minCheckoutItemsQuantity: maybe(
-      () => voucher.minCheckoutItemsQuantity.toString(),
-      "0"
-    ),
+    endDate: splitDateTime(voucher?.endDate ?? "").date,
+    endTime: splitDateTime(voucher?.endDate ?? "").time,
+    hasEndDate: !!voucher?.endDate,
+    hasUsageLimit: !!voucher?.usageLimit,
+    minCheckoutItemsQuantity:
+      voucher?.minCheckoutItemsQuantity?.toString() ?? "0",
     requirementsPicker: requirementsPickerInitValue,
-    startDate: splitDateTime(maybe(() => voucher.startDate, "")).date,
-    startTime: splitDateTime(maybe(() => voucher.startDate, "")).time,
-    type: maybe(() => voucher.type, VoucherTypeEnum.ENTIRE_ORDER),
-    usageLimit: maybe(() => voucher.usageLimit.toString(), "0")
+    startDate: splitDateTime(voucher?.startDate ?? "").date,
+    startTime: splitDateTime(voucher?.startDate ?? "").time,
+    type: voucher?.type ?? VoucherTypeEnum.ENTIRE_ORDER,
+    usageLimit: voucher?.usageLimit?.toString() ?? "0",
+    metadata: voucher?.metadata.map(mapMetadataItemToInput),
+    privateMetadata: voucher?.privateMetadata.map(mapMetadataItemToInput)
   };
 
   return (
@@ -207,11 +215,13 @@ const VoucherDetailsPage: React.FC<VoucherDetailsPageProps> = ({
               (data.requirementsPicker === RequirementsPicker.ORDER &&
                 validatePrice(channel.minSpent))
           );
+        const changeMetadata = makeMetadataChangeHandler(change);
+
         return (
           <Container>
-            <AppHeader onBack={onBack}>
+            <Backlink onClick={onBack}>
               {intl.formatMessage(sectionNames.vouchers)}
-            </AppHeader>
+            </Backlink>
             <PageHeader title={voucher?.code} />
             <Grid>
               <div>
@@ -344,7 +354,6 @@ const VoucherDetailsPage: React.FC<VoucherDetailsPageProps> = ({
                         onRowClick={onProductClick}
                         pageInfo={pageInfo}
                         discount={voucher}
-                        selectedChannelId={selectedChannelId}
                         channelsCount={allChannelsCount}
                         isChecked={isChecked}
                         selected={selected}
@@ -419,14 +428,15 @@ const VoucherDetailsPage: React.FC<VoucherDetailsPageProps> = ({
                   openModal={openChannelsModal}
                 />
               </div>
+              <Metadata data={data} onChange={changeMetadata} />
             </Grid>
-            <SaveButtonBar
+            <Savebar
               disabled={
                 disabled || formDisabled || (!hasChanged && !hasChannelChanged)
               }
               onCancel={onBack}
               onDelete={onRemove}
-              onSave={submit}
+              onSubmit={submit}
               state={saveButtonBarState}
             />
           </Container>

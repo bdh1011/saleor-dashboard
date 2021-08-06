@@ -12,10 +12,10 @@ import {
 import { useFileUploadMutation } from "@saleor/files/mutations";
 import useNavigator from "@saleor/hooks/useNavigator";
 import useNotifier from "@saleor/hooks/useNotifier";
-import useAttributeValueSearch from "@saleor/searches/useAttributeValueSearch";
 import usePageSearch from "@saleor/searches/usePageSearch";
 import usePageTypeSearch from "@saleor/searches/usePageTypeSearch";
 import useProductSearch from "@saleor/searches/useProductSearch";
+import createAttributeValueSearchHandler from "@saleor/utils/handlers/attributeValueSearchHandler";
 import createMetadataCreateHandler from "@saleor/utils/handlers/metadataCreateHandler";
 import { mapEdgesToItems } from "@saleor/utils/maps";
 import {
@@ -23,7 +23,7 @@ import {
   usePrivateMetadataUpdate
 } from "@saleor/utils/metadata/updateMetadata";
 import { getParsedDataForJsonStringField } from "@saleor/utils/richText/misc";
-import React, { useState } from "react";
+import React from "react";
 import { useIntl } from "react-intl";
 
 import PageDetailsPage from "../components/PageDetailsPage";
@@ -73,18 +73,11 @@ export const PageCreate: React.FC<PageCreateProps> = ({ params }) => {
   } = useProductSearch({
     variables: DEFAULT_INITIAL_SEARCH_DATA
   });
-  const [focusedAttribute, setFocusedAttribute] = useState<string>();
   const {
     loadMore: loadMoreAttributeValues,
     search: searchAttributeValues,
     result: searchAttributeValuesOpts
-  } = useAttributeValueSearch({
-    variables: {
-      id: focusedAttribute,
-      ...DEFAULT_INITIAL_SEARCH_DATA
-    },
-    skip: !focusedAttribute
-  });
+  } = createAttributeValueSearchHandler(DEFAULT_INITIAL_SEARCH_DATA);
 
   const { data: selectedPageType } = usePageTypeQuery({
     variables: {
@@ -94,9 +87,8 @@ export const PageCreate: React.FC<PageCreateProps> = ({ params }) => {
     skip: !selectedPageTypeId
   });
 
-  const attributeValues = mapEdgesToItems(
-    searchAttributeValuesOpts?.data?.attribute.choices
-  );
+  const attributeValues =
+    mapEdgesToItems(searchAttributeValuesOpts?.data?.attribute.choices) || [];
 
   const [uploadFile, uploadFileOpts] = useFileUploadMutation({});
 
@@ -199,7 +191,9 @@ export const PageCreate: React.FC<PageCreateProps> = ({ params }) => {
               saveButtonBarState={pageCreateOpts.status}
               page={null}
               attributeValues={attributeValues}
-              pageTypes={mapEdgesToItems(searchPageTypesOpts?.data?.search)}
+              pageTypes={
+                mapEdgesToItems(searchPageTypesOpts?.data?.search) || []
+              }
               onBack={() => navigate(pageListUrl())}
               onRemove={() => undefined}
               onSubmit={handleSubmit}
@@ -209,10 +203,12 @@ export const PageCreate: React.FC<PageCreateProps> = ({ params }) => {
                 params.action === "assign-attribute-value" && params.id
               }
               onAssignReferencesClick={handleAssignAttributeReferenceClick}
-              referencePages={mapEdgesToItems(searchPagesOpts?.data?.search)}
-              referenceProducts={mapEdgesToItems(
-                searchProductsOpts?.data?.search
-              )}
+              referencePages={
+                mapEdgesToItems(searchPagesOpts?.data?.search) || []
+              }
+              referenceProducts={
+                mapEdgesToItems(searchProductsOpts?.data?.search) || []
+              }
               fetchReferencePages={searchPages}
               fetchMoreReferencePages={fetchMoreReferencePages}
               fetchReferenceProducts={searchProducts}
@@ -222,7 +218,6 @@ export const PageCreate: React.FC<PageCreateProps> = ({ params }) => {
               onCloseDialog={() => navigate(pageCreateUrl())}
               selectedPageType={selectedPageType?.pageType}
               onSelectPageType={id => setSelectedPageTypeId(id)}
-              onAttributeFocus={setFocusedAttribute}
             />
           </>
         );

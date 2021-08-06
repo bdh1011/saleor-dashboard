@@ -49,7 +49,10 @@ export const attribute: AttributeDetails_attribute = {
           name: "John Doe",
           reference: null,
           slug: "john-doe",
-          richText: null
+          richText: null,
+          boolean: null,
+          date: null,
+          dateTime: null
         }
       },
       {
@@ -62,7 +65,10 @@ export const attribute: AttributeDetails_attribute = {
           name: "Milionare Pirate",
           reference: null,
           slug: "milionare-pirate",
-          richText: null
+          richText: null,
+          boolean: null,
+          date: null,
+          dateTime: null
         }
       }
     ]
@@ -81,6 +87,7 @@ export const attributes: Array<AttributeList_attributes_edges_node &
       name: "Author",
       slug: "author",
       type: AttributeTypeEnum.PRODUCT_TYPE,
+      inputType: AttributeInputTypeEnum.DROPDOWN,
       unit: null,
       choices: {
         __typename: "AttributeValueCountableConnection" as "AttributeValueCountableConnection",
@@ -104,7 +111,10 @@ export const attributes: Array<AttributeList_attributes_edges_node &
               slug: "john-doe",
               sortOrder: 0,
               value: "",
-              richText: null
+              richText: null,
+              boolean: null,
+              date: null,
+              dateTime: null
             }
           },
           {
@@ -119,7 +129,10 @@ export const attributes: Array<AttributeList_attributes_edges_node &
               slug: "milionare-pirate",
               sortOrder: 1,
               value: "",
-              richText: null
+              richText: null,
+              boolean: null,
+              date: null,
+              dateTime: null
             }
           }
         ]
@@ -136,6 +149,7 @@ export const attributes: Array<AttributeList_attributes_edges_node &
       name: "Box Size",
       slug: "box-size",
       type: AttributeTypeEnum.PRODUCT_TYPE,
+      inputType: AttributeInputTypeEnum.DROPDOWN,
       unit: null,
       choices: {
         __typename: "AttributeValueCountableConnection" as "AttributeValueCountableConnection",
@@ -159,7 +173,10 @@ export const attributes: Array<AttributeList_attributes_edges_node &
               slug: "100g",
               sortOrder: 0,
               value: "",
-              richText: null
+              richText: null,
+              boolean: null,
+              date: null,
+              dateTime: null
             }
           },
           {
@@ -174,7 +191,10 @@ export const attributes: Array<AttributeList_attributes_edges_node &
               slug: "250g",
               sortOrder: 1,
               value: "",
-              richText: null
+              richText: null,
+              boolean: null,
+              date: null,
+              dateTime: null
             }
           },
           {
@@ -189,7 +209,10 @@ export const attributes: Array<AttributeList_attributes_edges_node &
               slug: "500g",
               sortOrder: 2,
               value: "",
-              richText: null
+              richText: null,
+              boolean: null,
+              date: null,
+              dateTime: null
             }
           },
           {
@@ -204,7 +227,10 @@ export const attributes: Array<AttributeList_attributes_edges_node &
               slug: "1kg",
               sortOrder: 3,
               value: "",
-              richText: null
+              richText: null,
+              boolean: null,
+              date: null,
+              dateTime: null
             }
           }
         ]
@@ -221,6 +247,7 @@ export const attributes: Array<AttributeList_attributes_edges_node &
       name: "Brand",
       slug: "brand",
       type: AttributeTypeEnum.PRODUCT_TYPE,
+      inputType: AttributeInputTypeEnum.DROPDOWN,
       unit: null,
       choices: {
         __typename: "AttributeValueCountableConnection" as "AttributeValueCountableConnection",
@@ -244,7 +271,10 @@ export const attributes: Array<AttributeList_attributes_edges_node &
               slug: "saleor",
               sortOrder: 0,
               value: "",
-              richText: null
+              richText: null,
+              boolean: null,
+              date: null,
+              dateTime: null
             }
           }
         ]
@@ -261,6 +291,7 @@ export const attributes: Array<AttributeList_attributes_edges_node &
       name: "Candy Box Size",
       slug: "candy-box-size",
       type: AttributeTypeEnum.PRODUCT_TYPE,
+      inputType: AttributeInputTypeEnum.DROPDOWN,
       unit: null,
       choices: {
         __typename: "AttributeValueCountableConnection" as "AttributeValueCountableConnection",
@@ -284,7 +315,10 @@ export const attributes: Array<AttributeList_attributes_edges_node &
               slug: "100g",
               sortOrder: 0,
               value: "",
-              richText: null
+              richText: null,
+              boolean: null,
+              date: null,
+              dateTime: null
             }
           },
           {
@@ -299,7 +333,10 @@ export const attributes: Array<AttributeList_attributes_edges_node &
               slug: "250g",
               sortOrder: 1,
               value: "",
-              richText: null
+              richText: null,
+              boolean: null,
+              date: null,
+              dateTime: null
             }
           },
           {
@@ -314,7 +351,10 @@ export const attributes: Array<AttributeList_attributes_edges_node &
               slug: "500g",
               sortOrder: 2,
               value: "",
-              richText: null
+              richText: null,
+              boolean: null,
+              date: null,
+              dateTime: null
             }
           }
         ]
@@ -331,6 +371,7 @@ export const attributes: Array<AttributeList_attributes_edges_node &
       name: "Coffee Genre",
       slug: "coffee-genre",
       type: AttributeTypeEnum.PRODUCT_TYPE,
+      inputType: AttributeInputTypeEnum.DROPDOWN,
       unit: null,
       choices: {
         __typename: "AttributeValueCountableConnection" as "AttributeValueCountableConnection",
@@ -354,7 +395,10 @@ export const attributes: Array<AttributeList_attributes_edges_node &
               slug: "arabica",
               sortOrder: 0,
               value: "",
-              richText: null
+              richText: null,
+              boolean: null,
+              date: null,
+              dateTime: null
             }
           },
           {
@@ -369,7 +413,10 @@ export const attributes: Array<AttributeList_attributes_edges_node &
               slug: "robusta",
               sortOrder: 1,
               value: "",
-              richText: null
+              richText: null,
+              boolean: null,
+              date: null,
+              dateTime: null
             }
           }
         ]
@@ -386,6 +433,7 @@ export const attributes: Array<AttributeList_attributes_edges_node &
       name: "Collar",
       slug: "collar",
       type: AttributeTypeEnum.PRODUCT_TYPE,
+      inputType: AttributeInputTypeEnum.DROPDOWN,
       unit: null,
       choices: {
         __typename: "AttributeValueCountableConnection" as "AttributeValueCountableConnection",
@@ -409,7 +457,10 @@ export const attributes: Array<AttributeList_attributes_edges_node &
               slug: "round",
               sortOrder: 0,
               value: "",
-              richText: null
+              richText: null,
+              boolean: null,
+              date: null,
+              dateTime: null
             }
           },
           {
@@ -424,7 +475,10 @@ export const attributes: Array<AttributeList_attributes_edges_node &
               slug: "v-neck",
               sortOrder: 1,
               value: "",
-              richText: null
+              richText: null,
+              boolean: null,
+              date: null,
+              dateTime: null
             }
           },
           {
@@ -439,7 +493,10 @@ export const attributes: Array<AttributeList_attributes_edges_node &
               slug: "polo",
               sortOrder: 2,
               value: "",
-              richText: null
+              richText: null,
+              boolean: null,
+              date: null,
+              dateTime: null
             }
           }
         ]
@@ -456,6 +513,7 @@ export const attributes: Array<AttributeList_attributes_edges_node &
       name: "Color",
       slug: "color",
       type: AttributeTypeEnum.PRODUCT_TYPE,
+      inputType: AttributeInputTypeEnum.DROPDOWN,
       unit: null,
       choices: {
         __typename: "AttributeValueCountableConnection" as "AttributeValueCountableConnection",
@@ -479,7 +537,10 @@ export const attributes: Array<AttributeList_attributes_edges_node &
               slug: "blue",
               sortOrder: 0,
               value: "",
-              richText: null
+              richText: null,
+              boolean: null,
+              date: null,
+              dateTime: null
             }
           },
           {
@@ -494,7 +555,10 @@ export const attributes: Array<AttributeList_attributes_edges_node &
               slug: "white",
               sortOrder: 1,
               value: "",
-              richText: null
+              richText: null,
+              boolean: null,
+              date: null,
+              dateTime: null
             }
           }
         ]
@@ -511,6 +575,7 @@ export const attributes: Array<AttributeList_attributes_edges_node &
       name: "Cover",
       slug: "cover",
       type: AttributeTypeEnum.PRODUCT_TYPE,
+      inputType: AttributeInputTypeEnum.DROPDOWN,
       unit: null,
       choices: {
         __typename: "AttributeValueCountableConnection" as "AttributeValueCountableConnection",
@@ -534,7 +599,10 @@ export const attributes: Array<AttributeList_attributes_edges_node &
               slug: "soft",
               sortOrder: 0,
               value: "",
-              richText: null
+              richText: null,
+              boolean: null,
+              date: null,
+              dateTime: null
             }
           },
           {
@@ -549,7 +617,10 @@ export const attributes: Array<AttributeList_attributes_edges_node &
               slug: "hard",
               sortOrder: 1,
               value: "",
-              richText: null
+              richText: null,
+              boolean: null,
+              date: null,
+              dateTime: null
             }
           },
           {
@@ -564,7 +635,10 @@ export const attributes: Array<AttributeList_attributes_edges_node &
               slug: "middle-soft",
               sortOrder: 2,
               value: "",
-              richText: null
+              richText: null,
+              boolean: null,
+              date: null,
+              dateTime: null
             }
           },
           {
@@ -579,7 +653,10 @@ export const attributes: Array<AttributeList_attributes_edges_node &
               slug: "middle-hard",
               sortOrder: 3,
               value: "",
-              richText: null
+              richText: null,
+              boolean: null,
+              date: null,
+              dateTime: null
             }
           },
           {
@@ -594,7 +671,10 @@ export const attributes: Array<AttributeList_attributes_edges_node &
               slug: "middle",
               sortOrder: 4,
               value: "",
-              richText: null
+              richText: null,
+              boolean: null,
+              date: null,
+              dateTime: null
             }
           },
           {
@@ -609,7 +689,10 @@ export const attributes: Array<AttributeList_attributes_edges_node &
               slug: "very-hard",
               sortOrder: 5,
               value: "",
-              richText: null
+              richText: null,
+              boolean: null,
+              date: null,
+              dateTime: null
             }
           }
         ]
@@ -626,6 +709,7 @@ export const attributes: Array<AttributeList_attributes_edges_node &
       name: "Flavor",
       slug: "flavor",
       type: AttributeTypeEnum.PRODUCT_TYPE,
+      inputType: AttributeInputTypeEnum.DROPDOWN,
       unit: null,
       choices: {
         __typename: "AttributeValueCountableConnection" as "AttributeValueCountableConnection",
@@ -649,7 +733,10 @@ export const attributes: Array<AttributeList_attributes_edges_node &
               slug: "sour",
               sortOrder: 0,
               value: "",
-              richText: null
+              richText: null,
+              boolean: null,
+              date: null,
+              dateTime: null
             }
           },
           {
@@ -664,7 +751,10 @@ export const attributes: Array<AttributeList_attributes_edges_node &
               slug: "sweet",
               sortOrder: 1,
               value: "",
-              richText: null
+              richText: null,
+              boolean: null,
+              date: null,
+              dateTime: null
             }
           }
         ]
@@ -681,6 +771,7 @@ export const attributes: Array<AttributeList_attributes_edges_node &
       name: "Language",
       slug: "language",
       type: AttributeTypeEnum.PRODUCT_TYPE,
+      inputType: AttributeInputTypeEnum.DROPDOWN,
       unit: null,
       choices: {
         __typename: "AttributeValueCountableConnection" as "AttributeValueCountableConnection",
@@ -704,7 +795,10 @@ export const attributes: Array<AttributeList_attributes_edges_node &
               slug: "english",
               sortOrder: 0,
               value: "",
-              richText: null
+              richText: null,
+              boolean: null,
+              date: null,
+              dateTime: null
             }
           },
           {
@@ -719,7 +813,10 @@ export const attributes: Array<AttributeList_attributes_edges_node &
               slug: "pirate",
               sortOrder: 1,
               value: "",
-              richText: null
+              richText: null,
+              boolean: null,
+              date: null,
+              dateTime: null
             }
           }
         ]
@@ -736,6 +833,7 @@ export const attributes: Array<AttributeList_attributes_edges_node &
       name: "Publisher",
       slug: "publisher",
       type: AttributeTypeEnum.PRODUCT_TYPE,
+      inputType: AttributeInputTypeEnum.DROPDOWN,
       unit: null,
       choices: {
         __typename: "AttributeValueCountableConnection" as "AttributeValueCountableConnection",
@@ -759,7 +857,10 @@ export const attributes: Array<AttributeList_attributes_edges_node &
               slug: "mirumee-press",
               sortOrder: 0,
               value: "",
-              richText: null
+              richText: null,
+              boolean: null,
+              date: null,
+              dateTime: null
             }
           },
           {
@@ -774,7 +875,10 @@ export const attributes: Array<AttributeList_attributes_edges_node &
               slug: "saleor-publishing",
               sortOrder: 1,
               value: "",
-              richText: null
+              richText: null,
+              boolean: null,
+              date: null,
+              dateTime: null
             }
           }
         ]
@@ -792,6 +896,7 @@ export const attributes: Array<AttributeList_attributes_edges_node &
       slug: "size",
       type: AttributeTypeEnum.PRODUCT_TYPE,
       unit: null,
+      inputType: AttributeInputTypeEnum.DROPDOWN,
       choices: {
         __typename: "AttributeValueCountableConnection" as "AttributeValueCountableConnection",
         pageInfo: {
@@ -814,7 +919,10 @@ export const attributes: Array<AttributeList_attributes_edges_node &
               slug: "xs",
               sortOrder: 0,
               value: "",
-              richText: null
+              richText: null,
+              boolean: null,
+              date: null,
+              dateTime: null
             }
           },
           {
@@ -829,7 +937,10 @@ export const attributes: Array<AttributeList_attributes_edges_node &
               slug: "s",
               sortOrder: 1,
               value: "",
-              richText: null
+              richText: null,
+              boolean: null,
+              date: null,
+              dateTime: null
             }
           },
           {
@@ -844,7 +955,10 @@ export const attributes: Array<AttributeList_attributes_edges_node &
               slug: "m",
               sortOrder: 2,
               value: "",
-              richText: null
+              richText: null,
+              boolean: null,
+              date: null,
+              dateTime: null
             }
           },
           {
@@ -859,7 +973,10 @@ export const attributes: Array<AttributeList_attributes_edges_node &
               slug: "l",
               sortOrder: 3,
               value: "",
-              richText: null
+              richText: null,
+              boolean: null,
+              date: null,
+              dateTime: null
             }
           },
           {
@@ -874,7 +991,10 @@ export const attributes: Array<AttributeList_attributes_edges_node &
               slug: "xl",
               sortOrder: 4,
               value: "",
-              richText: null
+              richText: null,
+              boolean: null,
+              date: null,
+              dateTime: null
             }
           },
           {
@@ -889,7 +1009,10 @@ export const attributes: Array<AttributeList_attributes_edges_node &
               slug: "xxl",
               sortOrder: 5,
               value: "",
-              richText: null
+              richText: null,
+              boolean: null,
+              date: null,
+              dateTime: null
             }
           }
         ]

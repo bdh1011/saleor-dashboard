@@ -1,7 +1,7 @@
 import { InputBase, TextField } from "@material-ui/core";
 import { InputProps } from "@material-ui/core/Input";
 import { ExtendedFormHelperTextProps } from "@saleor/channels/components/ChannelForm/types";
-import { makeStyles } from "@saleor/theme";
+import { makeStyles } from "@saleor/macaw-ui";
 import { FetchMoreProps } from "@saleor/types";
 import classNames from "classnames";
 import Downshift from "downshift";
@@ -46,7 +46,7 @@ export interface SingleAutocompleteSelectFieldProps
   InputProps?: InputProps;
   fetchChoices?: (value: string) => void;
   onChange: (event: React.ChangeEvent<any>) => void;
-  onFocus?: () => void;
+  fetchOnFocus?: boolean;
   FormHelperTextProps?: ExtendedFormHelperTextProps;
   nakedInput?: boolean;
 }
@@ -76,7 +76,7 @@ const SingleAutocompleteSelectFieldComponent: React.FC<SingleAutocompleteSelectF
     fetchChoices,
     onChange,
     onFetchMore,
-    onFocus,
+    fetchOnFocus,
     FormHelperTextProps,
     nakedInput = false,
     ...rest
@@ -170,8 +170,8 @@ const SingleAutocompleteSelectFieldComponent: React.FC<SingleAutocompleteSelectF
               onBlur: handleBlur,
               onClick: toggleMenu,
               onFocus: () => {
-                if (onFocus) {
-                  onFocus();
+                if (fetchOnFocus) {
+                  fetchChoices(inputValue);
                 }
               }
             };
@@ -242,15 +242,11 @@ const SingleAutocompleteSelectField: React.FC<SingleAutocompleteSelectFieldProps
 
   if (fetchChoices) {
     return (
-      <DebounceAutocomplete debounceFn={fetchChoices}>
-        {debounceFn => (
-          <SingleAutocompleteSelectFieldComponent
-            choices={choices}
-            {...rest}
-            fetchChoices={debounceFn}
-          />
-        )}
-      </DebounceAutocomplete>
+      <SingleAutocompleteSelectFieldComponent
+        choices={choices}
+        {...rest}
+        fetchChoices={fetchChoices}
+      />
     );
   }
 

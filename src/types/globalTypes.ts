@@ -88,6 +88,9 @@ export enum AttributeErrorCode {
 }
 
 export enum AttributeInputTypeEnum {
+  BOOLEAN = "BOOLEAN",
+  DATE = "DATE",
+  DATE_TIME = "DATE_TIME",
   DROPDOWN = "DROPDOWN",
   FILE = "FILE",
   MULTISELECT = "MULTISELECT",
@@ -439,6 +442,7 @@ export enum DiscountValueTypeEnum {
 }
 
 export enum ExportErrorCode {
+  GRAPHQL_ERROR = "GRAPHQL_ERROR",
   INVALID = "INVALID",
   NOT_FOUND = "NOT_FOUND",
   REQUIRED = "REQUIRED",
@@ -677,6 +681,8 @@ export enum OrderEventsEnum {
   ORDER_FULLY_PAID = "ORDER_FULLY_PAID",
   ORDER_LINE_DISCOUNT_REMOVED = "ORDER_LINE_DISCOUNT_REMOVED",
   ORDER_LINE_DISCOUNT_UPDATED = "ORDER_LINE_DISCOUNT_UPDATED",
+  ORDER_LINE_PRODUCT_DELETED = "ORDER_LINE_PRODUCT_DELETED",
+  ORDER_LINE_VARIANT_DELETED = "ORDER_LINE_VARIANT_DELETED",
   ORDER_MARKED_AS_PAID = "ORDER_MARKED_AS_PAID",
   ORDER_REPLACEMENT_CREATED = "ORDER_REPLACEMENT_CREATED",
   OTHER = "OTHER",
@@ -761,6 +767,7 @@ export enum PaymentChargeStatusEnum {
 }
 
 export enum PermissionEnum {
+  HANDLE_PAYMENTS = "HANDLE_PAYMENTS",
   MANAGE_APPS = "MANAGE_APPS",
   MANAGE_CHANNELS = "MANAGE_CHANNELS",
   MANAGE_CHECKOUTS = "MANAGE_CHECKOUTS",
@@ -770,7 +777,6 @@ export enum PermissionEnum {
   MANAGE_ORDERS = "MANAGE_ORDERS",
   MANAGE_PAGES = "MANAGE_PAGES",
   MANAGE_PAGE_TYPES_AND_ATTRIBUTES = "MANAGE_PAGE_TYPES_AND_ATTRIBUTES",
-  HANDLE_PAYMENTS = "HANDLE_PAYMENTS",
   MANAGE_PLUGINS = "MANAGE_PLUGINS",
   MANAGE_PRODUCTS = "MANAGE_PRODUCTS",
   MANAGE_PRODUCT_TYPES_AND_ATTRIBUTES = "MANAGE_PRODUCT_TYPES_AND_ATTRIBUTES",
@@ -1038,6 +1044,8 @@ export enum WebhookEventTypeEnum {
   PRODUCT_VARIANT_CREATED = "PRODUCT_VARIANT_CREATED",
   PRODUCT_VARIANT_DELETED = "PRODUCT_VARIANT_DELETED",
   PRODUCT_VARIANT_UPDATED = "PRODUCT_VARIANT_UPDATED",
+  TRANSLATION_CREATED = "TRANSLATION_CREATED",
+  TRANSLATION_UPDATED = "TRANSLATION_UPDATED",
 }
 
 export enum WeightUnitsEnum {
@@ -1114,7 +1122,7 @@ export interface AttributeFilterInput {
   filterableInStorefront?: boolean | null;
   filterableInDashboard?: boolean | null;
   availableInGrid?: boolean | null;
-  metadata?: (MetadataInput | null)[] | null;
+  metadata?: (MetadataFilter | null)[] | null;
   search?: string | null;
   ids?: (string | null)[] | null;
   type?: AttributeTypeEnum | null;
@@ -1127,6 +1135,9 @@ export interface AttributeInput {
   slug: string;
   values?: (string | null)[] | null;
   valuesRange?: IntRangeInput | null;
+  dateTime?: DateTimeRangeInput | null;
+  date?: DateRangeInput | null;
+  boolean?: boolean | null;
 }
 
 export interface AttributeSortingInput {
@@ -1157,11 +1168,14 @@ export interface AttributeValueCreateInput {
 
 export interface AttributeValueInput {
   id?: string | null;
-  values?: (string | null)[] | null;
+  values?: string[] | null;
   file?: string | null;
   contentType?: string | null;
   references?: string[] | null;
   richText?: any | null;
+  boolean?: boolean | null;
+  date?: any | null;
+  dateTime?: any | null;
 }
 
 export interface AttributeValueTranslationInput {
@@ -1171,7 +1185,8 @@ export interface AttributeValueTranslationInput {
 
 export interface BulkAttributeValueInput {
   id?: string | null;
-  values: (string | null)[];
+  values?: string[] | null;
+  boolean?: boolean | null;
 }
 
 export interface CatalogueInput {
@@ -1182,7 +1197,7 @@ export interface CatalogueInput {
 
 export interface CategoryFilterInput {
   search?: string | null;
-  metadata?: (MetadataInput | null)[] | null;
+  metadata?: (MetadataFilter | null)[] | null;
   ids?: (string | null)[] | null;
 }
 
@@ -1241,7 +1256,7 @@ export interface CollectionCreateInput {
 export interface CollectionFilterInput {
   published?: CollectionPublished | null;
   search?: string | null;
-  metadata?: (MetadataInput | null)[] | null;
+  metadata?: (MetadataFilter | null)[] | null;
   ids?: (string | null)[] | null;
   channel?: string | null;
 }
@@ -1273,6 +1288,7 @@ export interface CustomerFilterInput {
   numberOfOrders?: IntRangeInput | null;
   placedOrders?: DateRangeInput | null;
   search?: string | null;
+  metadata?: (MetadataFilter | null)[] | null;
 }
 
 export interface CustomerInput {
@@ -1387,6 +1403,11 @@ export interface MenuSortingInput {
   field: MenuSortField;
 }
 
+export interface MetadataFilter {
+  key: string;
+  value?: string | null;
+}
+
 export interface MetadataInput {
   key: string;
   value: string;
@@ -1410,7 +1431,7 @@ export interface OrderDraftFilterInput {
   customer?: string | null;
   created?: DateRangeInput | null;
   search?: string | null;
-  metadata?: (MetadataInput | null)[] | null;
+  metadata?: (MetadataFilter | null)[] | null;
   channels?: (string | null)[] | null;
 }
 
@@ -1420,7 +1441,7 @@ export interface OrderFilterInput {
   customer?: string | null;
   created?: DateRangeInput | null;
   search?: string | null;
-  metadata?: (MetadataInput | null)[] | null;
+  metadata?: (MetadataFilter | null)[] | null;
   channels?: (string | null)[] | null;
 }
 
@@ -1517,8 +1538,9 @@ export interface PageCreateInput {
 
 export interface PageFilterInput {
   search?: string | null;
-  metadata?: (MetadataInput | null)[] | null;
+  metadata?: (MetadataFilter | null)[] | null;
   pageTypes?: (string | null)[] | null;
+  ids?: (string | null)[] | null;
 }
 
 export interface PageInput {
@@ -1659,7 +1681,7 @@ export interface ProductFilterInput {
   stockAvailability?: StockAvailability | null;
   stocks?: ProductStockFilterInput | null;
   search?: string | null;
-  metadata?: (MetadataInput | null)[] | null;
+  metadata?: (MetadataFilter | null)[] | null;
   price?: PriceRangeInput | null;
   minimalPrice?: PriceRangeInput | null;
   productTypes?: (string | null)[] | null;
@@ -1697,7 +1719,7 @@ export interface ProductTypeFilterInput {
   search?: string | null;
   configurable?: ProductTypeConfigurable | null;
   productType?: ProductTypeEnum | null;
-  metadata?: (MetadataInput | null)[] | null;
+  metadata?: (MetadataFilter | null)[] | null;
   ids?: (string | null)[] | null;
 }
 
@@ -1719,7 +1741,7 @@ export interface ProductTypeSortingInput {
 }
 
 export interface ProductVariantBulkCreateInput {
-  attributes: (BulkAttributeValueInput | null)[];
+  attributes: BulkAttributeValueInput[];
   sku: string;
   trackInventory?: boolean | null;
   weight?: any | null;
@@ -1734,7 +1756,7 @@ export interface ProductVariantChannelListingAddInput {
 }
 
 export interface ProductVariantCreateInput {
-  attributes: (AttributeValueInput | null)[];
+  attributes: AttributeValueInput[];
   sku?: string | null;
   trackInventory?: boolean | null;
   weight?: any | null;
@@ -1743,7 +1765,7 @@ export interface ProductVariantCreateInput {
 }
 
 export interface ProductVariantInput {
-  attributes?: (AttributeValueInput | null)[] | null;
+  attributes?: AttributeValueInput[] | null;
   sku?: string | null;
   trackInventory?: boolean | null;
   weight?: any | null;
@@ -1775,6 +1797,7 @@ export interface SaleFilterInput {
   saleType?: DiscountValueTypeEnum | null;
   started?: DateTimeRangeInput | null;
   search?: string | null;
+  metadata?: (MetadataFilter | null)[] | null;
 }
 
 export interface SaleInput {
@@ -1957,6 +1980,7 @@ export interface VoucherFilterInput {
   discountType?: (VoucherDiscountType | null)[] | null;
   started?: DateTimeRangeInput | null;
   search?: string | null;
+  metadata?: (MetadataFilter | null)[] | null;
 }
 
 export interface VoucherInput {
@@ -1973,6 +1997,7 @@ export interface VoucherInput {
   countries?: (string | null)[] | null;
   applyOncePerOrder?: boolean | null;
   applyOncePerCustomer?: boolean | null;
+  onlyForStaff?: boolean | null;
   usageLimit?: number | null;
 }
 
@@ -1982,23 +2007,11 @@ export interface VoucherSortingInput {
   field: VoucherSortField;
 }
 
-export interface WarehouseAddressInput {
-  streetAddress1: string;
-  streetAddress2?: string | null;
-  city: string;
-  cityArea?: string | null;
-  postalCode?: string | null;
-  country: CountryCode;
-  countryArea?: string | null;
-  phone?: string | null;
-}
-
 export interface WarehouseCreateInput {
   slug?: string | null;
-  companyName?: string | null;
   email?: string | null;
   name: string;
-  address: WarehouseAddressInput;
+  address: AddressInput;
   shippingZones?: (string | null)[] | null;
 }
 
@@ -2014,10 +2027,9 @@ export interface WarehouseSortingInput {
 
 export interface WarehouseUpdateInput {
   slug?: string | null;
-  companyName?: string | null;
   email?: string | null;
   name?: string | null;
-  address?: WarehouseAddressInput | null;
+  address?: AddressInput | null;
 }
 
 export interface WebhookCreateInput {

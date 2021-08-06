@@ -7,8 +7,8 @@ import Skeleton from "@saleor/components/Skeleton";
 import TableCellHeader from "@saleor/components/TableCellHeader";
 import TableHead from "@saleor/components/TableHead";
 import TablePagination from "@saleor/components/TablePagination";
+import { makeStyles } from "@saleor/macaw-ui";
 import { maybe, renderCollection } from "@saleor/misc";
-import { makeStyles } from "@saleor/theme";
 import { ChannelProps, ListActions, ListProps, SortPage } from "@saleor/types";
 import { getArrowDirection } from "@saleor/utils/sort";
 import React from "react";
@@ -184,8 +184,8 @@ const CollectionList: React.FC<CollectionListProps> = props => {
                     channel ? (
                       <ChannelsAvailabilityDropdown
                         allChannelsCount={channelsCount}
-                        currentChannel={channel}
                         channels={collection?.channelListings}
+                        showStatus
                       />
                     ) : null
                   ) : (

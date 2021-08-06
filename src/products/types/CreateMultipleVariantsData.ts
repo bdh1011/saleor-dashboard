@@ -31,6 +31,9 @@ export interface CreateMultipleVariantsData_product_attributes_attribute_choices
   file: CreateMultipleVariantsData_product_attributes_attribute_choices_edges_node_file | null;
   reference: string | null;
   richText: any | null;
+  boolean: boolean | null;
+  date: any | null;
+  dateTime: any | null;
 }
 
 export interface CreateMultipleVariantsData_product_attributes_attribute_choices_edges {
@@ -71,6 +74,9 @@ export interface CreateMultipleVariantsData_product_attributes_values {
   file: CreateMultipleVariantsData_product_attributes_values_file | null;
   reference: string | null;
   richText: any | null;
+  boolean: boolean | null;
+  date: any | null;
+  dateTime: any | null;
 }
 
 export interface CreateMultipleVariantsData_product_attributes {
@@ -101,6 +107,9 @@ export interface CreateMultipleVariantsData_product_productType_variantAttribute
   file: CreateMultipleVariantsData_product_productType_variantAttributes_choices_edges_node_file | null;
   reference: string | null;
   richText: any | null;
+  boolean: boolean | null;
+  date: any | null;
+  dateTime: any | null;
 }
 
 export interface CreateMultipleVariantsData_product_productType_variantAttributes_choices_edges {
@@ -119,6 +128,8 @@ export interface CreateMultipleVariantsData_product_productType_variantAttribute
   __typename: "Attribute";
   id: string;
   name: string | null;
+  inputType: AttributeInputTypeEnum | null;
+  unit: MeasurementUnitsEnum | null;
   choices: CreateMultipleVariantsData_product_productType_variantAttributes_choices | null;
 }
 

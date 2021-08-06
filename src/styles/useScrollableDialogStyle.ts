@@ -1,10 +1,7 @@
-import { makeStyles } from "@saleor/theme";
+import { makeStyles } from "@saleor/macaw-ui";
 
 const useScrollableDialogStyle = makeStyles(
   theme => ({
-    content: {
-      overflowY: "hidden"
-    },
     dialog: {
       height: "calc(100% - 64px)",
       maxHeight: 700
@@ -16,8 +13,13 @@ const useScrollableDialogStyle = makeStyles(
       justifyContent: "center",
       marginTop: theme.spacing(3)
     },
+    topArea: {
+      overflowY: "visible"
+    },
     scrollArea: {
-      overflowY: "scroll"
+      overflowY: "scroll",
+      paddingTop: 0,
+      height: "inherit"
     }
   }),
   {

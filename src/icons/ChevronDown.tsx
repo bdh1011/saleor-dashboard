@@ -1,8 +1,8 @@
-import useTheme from "@saleor/hooks/useTheme";
+import { useTheme } from "@saleor/macaw-ui";
 import React from "react";
 
 const ChevronDown: React.FC = () => {
-  const { isDark } = useTheme();
+  const { themeType } = useTheme();
 
   return (
     <svg
@@ -15,9 +15,9 @@ const ChevronDown: React.FC = () => {
     >
       <path
         d="M1 1L5 5L9 1"
-        stroke={isDark ? "#FAFAFA" : "#28234A"}
-        stroke-opacity="0.4"
-        stroke-width="2"
+        stroke={themeType === "dark" ? "#FAFAFA" : "#28234A"}
+        strokeOpacity="0.4"
+        strokeWidth="2"
       />
     </svg>
   );

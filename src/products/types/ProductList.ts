@@ -91,6 +91,9 @@ export interface ProductList_products_edges_node_attributes_values {
   file: ProductList_products_edges_node_attributes_values_file | null;
   reference: string | null;
   richText: any | null;
+  boolean: boolean | null;
+  date: any | null;
+  dateTime: any | null;
 }
 
 export interface ProductList_products_edges_node_attributes {
@@ -139,5 +142,6 @@ export interface ProductListVariables {
   last?: number | null;
   before?: string | null;
   filter?: ProductFilterInput | null;
+  channel?: string | null;
   sort?: ProductOrder | null;
 }

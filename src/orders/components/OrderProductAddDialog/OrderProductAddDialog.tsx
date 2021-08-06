@@ -24,12 +24,12 @@ import useModalDialogErrors from "@saleor/hooks/useModalDialogErrors";
 import useModalDialogOpen from "@saleor/hooks/useModalDialogOpen";
 import useSearchQuery from "@saleor/hooks/useSearchQuery";
 import { buttonMessages } from "@saleor/intl";
+import { makeStyles } from "@saleor/macaw-ui";
 import { maybe, renderCollection } from "@saleor/misc";
-import { makeStyles } from "@saleor/theme";
 import { ChannelProps, FetchMoreProps } from "@saleor/types";
 import getOrderErrorMessage from "@saleor/utils/errors/order";
 import React from "react";
-import InfiniteScroll from "react-infinite-scroller";
+import InfiniteScroll from "react-infinite-scroll-component";
 import { FormattedMessage, useIntl } from "react-intl";
 
 import {
@@ -164,6 +164,8 @@ const onVariantAdd = (
       )
     : setVariants([...variants, variant]);
 
+const scrollableTargetId = "orderProductAddScrollableDialog";
+
 const OrderProductAddDialog: React.FC<OrderProductAddDialogProps> = props => {
   const {
     confirmButtonState,
@@ -267,18 +269,18 @@ const OrderProductAddDialog: React.FC<OrderProductAddDialogProps> = props => {
           }}
         />
       </DialogContent>
-      <DialogContent className={classes.content}>
+      <DialogContent className={classes.content} id={scrollableTargetId}>
         <InfiniteScroll
-          pageStart={0}
-          loadMore={onFetchMore}
+          dataLength={productChoicesWithValidVariants?.length}
+          next={onFetchMore}
           hasMore={hasMore}
-          useWindow={false}
+          scrollThreshold="100px"
           loader={
             <div className={classes.loadMoreLoaderContainer}>
               <CircularProgress size={16} />
             </div>
           }
-          threshold={10}
+          scrollableTarget={scrollableTargetId}
         >
           <ResponsiveTable key="table">
             <TableBody>

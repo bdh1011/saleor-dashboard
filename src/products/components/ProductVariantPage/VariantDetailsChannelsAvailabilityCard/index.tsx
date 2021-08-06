@@ -9,7 +9,7 @@ import Skeleton from "@saleor/components/Skeleton";
 import { ProductVariant } from "@saleor/fragments/types/ProductVariant";
 import useDateLocalize from "@saleor/hooks/useDateLocalize";
 import IconChevronDown from "@saleor/icons/ChevronDown";
-import { makeStyles } from "@saleor/theme";
+import { makeStyles } from "@saleor/macaw-ui";
 import React from "react";
 import { useIntl } from "react-intl";
 
@@ -144,18 +144,16 @@ const VariantDetailsChannelsAvailabilityCard: React.FC<VariantDetailsChannelsAva
           classes={summaryClasses}
           data-test-id="channels-variant-availability-summary"
         >
-          <>
-            <Typography variant="caption">
-              {intl.formatMessage(messages.subtitle, {
-                publishedInChannelsCount: publishedInChannelsListings.length,
-                availableChannelsCount: allAvailableChannelsListings.length
-              })}
-            </Typography>
-          </>
+          <Typography variant="caption">
+            {intl.formatMessage(messages.subtitle, {
+              publishedInChannelsCount: publishedInChannelsListings.length,
+              availableChannelsCount: allAvailableChannelsListings.length
+            })}
+          </Typography>
         </ExpansionPanelSummary>
 
         {channelListings.map(({ channel }) => (
-          <>
+          <React.Fragment key={channel.id}>
             <Divider />
             <CardContent>
               <Typography
@@ -170,7 +168,7 @@ const VariantDetailsChannelsAvailabilityCard: React.FC<VariantDetailsChannelsAva
                 {getItemSubtitle(channel.id)}
               </Typography>
             </CardContent>
-          </>
+          </React.Fragment>
         ))}
       </ExpansionPanel>
     </CardContainer>

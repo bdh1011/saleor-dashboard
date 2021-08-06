@@ -1,5 +1,5 @@
 import { stringify } from "../support/format/formatJson";
-import { getValueWithDefault } from "./utils/Utils";
+import { getValueWithDefault, getVariantsListIds } from "./utils/Utils";
 
 export function getFirstProducts(first, search) {
   const filter = search
@@ -97,6 +97,7 @@ export function createProduct({
     collectionId,
     `collections:["${collectionId}"]`
   );
+  const category = getValueWithDefault(categoryId, `category:"${categoryId}"`);
   const descriptionLine = getValueWithDefault(
     description,
     `description:"{\\"blocks\\":[{\\"type\\":\\"paragraph\\",\\"data\\":{\\"text\\":\\"${description}\\"}}]}"`
@@ -110,7 +111,7 @@ export function createProduct({
       slug:"${name}"
       seo:{title:"${name}" description:""}
       productType:"${productTypeId}"
-      category:"${categoryId}"
+      ${category}
       ${collection}
       ${descriptionLine}
     }){
@@ -138,7 +139,8 @@ export function createVariant({
   attributeId,
   price = 1,
   costPrice = 1,
-  trackInventory = true
+  trackInventory = true,
+  weight = 1
 }) {
   const channelListings = getValueWithDefault(
     channelId,
@@ -163,6 +165,7 @@ export function createVariant({
         id:"${attributeId}"
         values: ["value"]
       }]
+      weight: ${weight}
       sku: "${sku}"
       ${channelListings}
       trackInventory:${trackInventory}
@@ -183,41 +186,6 @@ export function createVariant({
     .its("body.data.productVariantBulkCreate.productVariants");
 }
 
-export function createTypeProduct({
-  name,
-  attributeId,
-  hasVariants = true,
-  slug = name,
-  shippable = true
-}) {
-  const variantAttributesLine = getValueWithDefault(
-    hasVariants,
-    `variantAttributes: "${attributeId}"`
-  );
-  const mutation = `mutation{
-    productTypeCreate(input: {
-      name: "${name}"
-      slug: "${slug}"
-      productAttributes: "${attributeId}"
-      hasVariants: ${hasVariants}
-      ${variantAttributesLine}
-      isShippingRequired:${shippable}
-    }){
-      productErrors{
-        field
-        message
-      }
-      productType{
-        id
-        name
-      }
-    }
-  } `;
-  return cy
-    .sendRequestWithQuery(mutation)
-    .its("body.data.productTypeCreate.productType");
-}
-
 export function deleteProduct(productId) {
   const mutation = `mutation{
     productDelete(id: "${productId}"){
@@ -230,32 +198,22 @@ export function deleteProduct(productId) {
   return cy.sendRequestWithQuery(mutation);
 }
 
-export function getProductTypes(first, search) {
+export function getVariants(variantsList) {
+  const variantsIds = getVariantsListIds(variantsList);
   const query = `query{
-    productTypes(first:${first}, filter:{
-      search:"${search}"
-    }){
+    productVariants(first:100 ids:[${variantsIds}]){
       edges{
         node{
-          id
-          name
+          stocks{
+            warehouse{
+              id
+            }
+            quantity
+            quantityAllocated
+          }
         }
       }
     }
   }`;
-  return cy
-    .sendRequestWithQuery(query)
-    .then(resp => resp.body.data.productTypes.edges);
-}
-
-export function deleteProductType(productTypeId) {
-  const mutation = `mutation{
-    productTypeDelete(id:"${productTypeId}"){
-      productErrors{
-        field
-        message
-      }
-    }
-  }`;
-  return cy.sendRequestWithQuery(mutation);
+  return cy.sendRequestWithQuery(query).its("body.data.productVariants");
 }

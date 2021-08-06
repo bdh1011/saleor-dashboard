@@ -3,7 +3,6 @@ import {
   mergeAttributeValues
 } from "@saleor/attributes/utils/data";
 import { ChannelPriceData } from "@saleor/channels/utils";
-import AppHeader from "@saleor/components/AppHeader";
 import AssignAttributeValueDialog from "@saleor/components/AssignAttributeValueDialog";
 import Attributes, {
   AttributeInput,
@@ -16,11 +15,12 @@ import Grid from "@saleor/components/Grid";
 import { MetadataFormData } from "@saleor/components/Metadata";
 import Metadata from "@saleor/components/Metadata/Metadata";
 import PageHeader from "@saleor/components/PageHeader";
-import SaveButtonBar from "@saleor/components/SaveButtonBar";
+import Savebar from "@saleor/components/Savebar";
 import { ProductChannelListingErrorFragment } from "@saleor/fragments/types/ProductChannelListingErrorFragment";
 import { ProductErrorWithAttributesFragment } from "@saleor/fragments/types/ProductErrorWithAttributesFragment";
 import { ProductVariant } from "@saleor/fragments/types/ProductVariant";
 import { WarehouseFragment } from "@saleor/fragments/types/WarehouseFragment";
+import { Backlink } from "@saleor/macaw-ui";
 import { VariantUpdate_productVariantUpdate_errors } from "@saleor/products/types/VariantUpdate";
 import { SearchAttributeValues_attribute_choices_edges_node } from "@saleor/searches/types/SearchAttributeValues";
 import { SearchPages_search_edges_node } from "@saleor/searches/types/SearchPages";
@@ -94,9 +94,8 @@ interface ProductVariantPageProps {
   fetchMoreAttributeValues?: FetchMoreProps;
   fetchReferencePages?: (data: string) => void;
   fetchReferenceProducts?: (data: string) => void;
-  fetchAttributeValues: (query: string) => void;
+  fetchAttributeValues: (query: string, attributeId: string) => void;
   onAssignReferencesClick: (attribute: AttributeInput) => void;
-  onAttributeFocus: (id: string) => void;
   onCloseDialog: () => void;
   onVariantReorder: ReorderAction;
   onAdd();
@@ -133,7 +132,6 @@ const ProductVariantPage: React.FC<ProductVariantPageProps> = ({
   onVariantReorder,
   onSetDefaultVariant,
   onWarehouseConfigure,
-  onAttributeFocus,
   assignReferencesAttributeId,
   onAssignReferencesClick,
   fetchReferencePages,
@@ -178,7 +176,7 @@ const ProductVariantPage: React.FC<ProductVariantPageProps> = ({
   return (
     <>
       <Container>
-        <AppHeader onBack={onBack}>{variant?.product?.name}</AppHeader>
+        <Backlink onClick={onBack}>{variant?.product?.name}</Backlink>
         <PageHeader title={header}>
           {variant?.product?.defaultVariant?.id !== variant?.id && (
             <ProductVariantSetDefault
@@ -229,6 +227,7 @@ const ProductVariantPage: React.FC<ProductVariantPageProps> = ({
                 <div>
                   <VariantDetailsChannelsAvailabilityCard variant={variant} />
                   <Attributes
+                    entityId={variant?.id}
                     title={intl.formatMessage(messages.nonSelectionAttributes)}
                     attributes={data.attributes.filter(
                       attribute =>
@@ -247,10 +246,10 @@ const ProductVariantPage: React.FC<ProductVariantPageProps> = ({
                     onReferencesReorder={handlers.reorderAttributeValue}
                     fetchAttributeValues={fetchAttributeValues}
                     fetchMoreAttributeValues={fetchMoreAttributeValues}
-                    onAttributeFocus={onAttributeFocus}
                   />
                   <CardSpacer />
                   <Attributes
+                    entityId={variant?.id}
                     title={intl.formatMessage(
                       messages.selectionAttributesHeader
                     )}
@@ -271,7 +270,6 @@ const ProductVariantPage: React.FC<ProductVariantPageProps> = ({
                     onReferencesReorder={handlers.reorderAttributeValue}
                     fetchAttributeValues={fetchAttributeValues}
                     fetchMoreAttributeValues={fetchMoreAttributeValues}
-                    onAttributeFocus={onAttributeFocus}
                   />
                   <CardSpacer />
                   <ProductVariantMedia
@@ -319,12 +317,12 @@ const ProductVariantPage: React.FC<ProductVariantPageProps> = ({
                   <Metadata data={data} onChange={handlers.changeMetadata} />
                 </div>
               </Grid>
-              <SaveButtonBar
+              <Savebar
                 disabled={loading || formDisabled || !hasChanged}
                 state={saveButtonBarState}
                 onCancel={onBack}
                 onDelete={onDelete}
-                onSave={submit}
+                onSubmit={submit}
               />
               {canOpenAssignReferencesAttributeDialog && (
                 <AssignAttributeValueDialog

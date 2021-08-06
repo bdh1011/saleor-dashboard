@@ -25,12 +25,12 @@ import useModalDialogErrors from "@saleor/hooks/useModalDialogErrors";
 import useModalDialogOpen from "@saleor/hooks/useModalDialogOpen";
 import useSearchQuery from "@saleor/hooks/useSearchQuery";
 import { buttonMessages } from "@saleor/intl";
+import { makeStyles } from "@saleor/macaw-ui";
 import { maybe, renderCollection } from "@saleor/misc";
-import { makeStyles } from "@saleor/theme";
 import { FetchMoreProps } from "@saleor/types";
 import classNames from "classnames";
 import React from "react";
-import InfiniteScroll from "react-infinite-scroller";
+import InfiniteScroll from "react-infinite-scroll-component";
 import { FormattedMessage, useIntl } from "react-intl";
 
 const useStyles = makeStyles(
@@ -72,6 +72,8 @@ export interface AssignAttributeDialogProps extends FetchMoreProps {
   onSubmit: () => void;
   onToggle: (id: string) => void;
 }
+
+const scrollableTargetId = "assignAttributeScrollableDialog";
 
 const AssignAttributeDialog: React.FC<AssignAttributeDialogProps> = ({
   attributes,
@@ -126,19 +128,22 @@ const AssignAttributeDialog: React.FC<AssignAttributeDialogProps> = ({
           }}
         />
       </DialogContent>
-      <DialogContent className={classes.scrollArea} ref={anchor}>
+      <DialogContent
+        className={classes.scrollArea}
+        ref={anchor}
+        id={scrollableTargetId}
+      >
         <InfiniteScroll
-          pageStart={0}
-          loadMore={onFetchMore}
+          dataLength={attributes?.length}
+          next={onFetchMore}
           hasMore={hasMore}
-          useWindow={false}
+          scrollThreshold="100px"
           loader={
             <div className={classes.loadMoreLoaderContainer}>
               <CircularProgress size={16} />
             </div>
           }
-          threshold={100}
-          key="infinite-scroll"
+          scrollableTarget={scrollableTargetId}
         >
           <ResponsiveTable key="table">
             <TableBody>

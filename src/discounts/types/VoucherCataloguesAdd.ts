@@ -16,6 +16,18 @@ export interface VoucherCataloguesAdd_voucherCataloguesAdd_errors {
   channels: string[] | null;
 }
 
+export interface VoucherCataloguesAdd_voucherCataloguesAdd_voucher_metadata {
+  __typename: "MetadataItem";
+  key: string;
+  value: string;
+}
+
+export interface VoucherCataloguesAdd_voucherCataloguesAdd_voucher_privateMetadata {
+  __typename: "MetadataItem";
+  key: string;
+  value: string;
+}
+
 export interface VoucherCataloguesAdd_voucherCataloguesAdd_voucher_countries {
   __typename: "CountryDisplay";
   code: string;
@@ -167,6 +179,8 @@ export interface VoucherCataloguesAdd_voucherCataloguesAdd_voucher_categories {
 
 export interface VoucherCataloguesAdd_voucherCataloguesAdd_voucher {
   __typename: "Voucher";
+  metadata: (VoucherCataloguesAdd_voucherCataloguesAdd_voucher_metadata | null)[];
+  privateMetadata: (VoucherCataloguesAdd_voucherCataloguesAdd_voucher_privateMetadata | null)[];
   id: string;
   code: string;
   startDate: any;
@@ -180,6 +194,7 @@ export interface VoucherCataloguesAdd_voucherCataloguesAdd_voucher {
   used: number;
   applyOncePerOrder: boolean;
   applyOncePerCustomer: boolean;
+  onlyForStaff: boolean;
   products: VoucherCataloguesAdd_voucherCataloguesAdd_voucher_products | null;
   collections: VoucherCataloguesAdd_voucherCataloguesAdd_voucher_collections | null;
   categories: VoucherCataloguesAdd_voucherCataloguesAdd_voucher_categories | null;

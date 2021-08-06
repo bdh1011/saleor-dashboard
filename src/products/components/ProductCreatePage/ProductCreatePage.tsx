@@ -4,7 +4,6 @@ import {
 } from "@saleor/attributes/utils/data";
 import CannotDefineChannelsAvailabilityCard from "@saleor/channels/components/CannotDefineChannelsAvailabilityCard/CannotDefineChannelsAvailabilityCard";
 import { ChannelData } from "@saleor/channels/utils";
-import AppHeader from "@saleor/components/AppHeader";
 import AssignAttributeValueDialog from "@saleor/components/AssignAttributeValueDialog";
 import Attributes, { AttributeInput } from "@saleor/components/Attributes";
 import CardSpacer from "@saleor/components/CardSpacer";
@@ -15,13 +14,14 @@ import Grid from "@saleor/components/Grid";
 import Metadata from "@saleor/components/Metadata";
 import { MultiAutocompleteChoiceType } from "@saleor/components/MultiAutocompleteSelectField";
 import PageHeader from "@saleor/components/PageHeader";
-import SaveButtonBar from "@saleor/components/SaveButtonBar";
+import Savebar from "@saleor/components/Savebar";
 import SeoForm from "@saleor/components/SeoForm";
 import { ProductChannelListingErrorFragment } from "@saleor/fragments/types/ProductChannelListingErrorFragment";
 import { ProductErrorWithAttributesFragment } from "@saleor/fragments/types/ProductErrorWithAttributesFragment";
 import { TaxTypeFragment } from "@saleor/fragments/types/TaxTypeFragment";
 import useStateFromProps from "@saleor/hooks/useStateFromProps";
 import { sectionNames } from "@saleor/intl";
+import { Backlink } from "@saleor/macaw-ui";
 import ProductVariantPrice from "@saleor/products/components/ProductVariantPrice";
 import { ProductType_productType } from "@saleor/products/types/ProductType";
 import { getChoices } from "@saleor/products/utils/data";
@@ -74,8 +74,7 @@ interface ProductCreatePageProps {
   fetchCategories: (data: string) => void;
   fetchCollections: (data: string) => void;
   fetchProductTypes: (data: string) => void;
-  fetchAttributeValues: (query: string) => void;
-  onAttributeFocus: (id: string) => void;
+  fetchAttributeValues: (query: string, attributeId: string) => void;
   onWarehouseConfigure: () => void;
   openChannelsModal: () => void;
   onChannelsChange: (data: ChannelData[]) => void;
@@ -130,8 +129,7 @@ export const ProductCreatePage: React.FC<ProductCreatePageProps> = ({
   fetchAttributeValues,
   fetchMoreAttributeValues,
   onCloseDialog,
-  onSelectProductType,
-  onAttributeFocus
+  onSelectProductType
 }: ProductCreatePageProps) => {
   const intl = useIntl();
 
@@ -213,9 +211,9 @@ export const ProductCreatePage: React.FC<ProductCreatePageProps> = ({
 
         return (
           <Container>
-            <AppHeader onBack={onBack}>
+            <Backlink onClick={onBack}>
               {intl.formatMessage(sectionNames.products)}
-            </AppHeader>
+            </Backlink>
             <PageHeader title={header} />
             <Grid>
               <div>
@@ -242,7 +240,6 @@ export const ProductCreatePage: React.FC<ProductCreatePageProps> = ({
                     onReferencesReorder={handlers.reorderAttributeValue}
                     fetchAttributeValues={fetchAttributeValues}
                     fetchMoreAttributeValues={fetchMoreAttributeValues}
-                    onAttributeFocus={onAttributeFocus}
                   />
                 )}
                 <CardSpacer />
@@ -357,9 +354,9 @@ export const ProductCreatePage: React.FC<ProductCreatePageProps> = ({
                 />
               </div>
             </Grid>
-            <SaveButtonBar
+            <Savebar
               onCancel={onBack}
-              onSave={submit}
+              onSubmit={submit}
               state={saveButtonBarState}
               disabled={loading || !onSubmit || formDisabled || !hasChanged}
             />

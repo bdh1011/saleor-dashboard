@@ -1,6 +1,7 @@
 import { PRODUCTS_LIST } from "../../../elements/catalog/products/products-list";
 import { BUTTON_SELECTORS } from "../../../elements/shared/button-selectors";
-import { SHARED_ELEMENTS } from "../../../elements/shared/sharedElements";
+import { getElementByDataTestId } from "../../../elements/shared/sharedElements";
+import { waitForProgressBarToNotExist } from "../../shared/progressBar";
 
 export function isNumberOfProductsSameAsInSelectResultsOnPage() {
   let numberOfResults;
@@ -36,7 +37,8 @@ export function getDisplayedColumnArray(columnName) {
 }
 export function selectFilterOption(filter, optionName) {
   selectFilterBy(filter)
-    .get(PRODUCTS_LIST.filters.filterBySearchInput)
+    .get(PRODUCTS_LIST.filters.filterField[filter])
+    .find(PRODUCTS_LIST.filters.filterBySearchInput)
     .type(optionName);
   cy.contains(PRODUCTS_LIST.filters.filterOption, optionName)
     .find(BUTTON_SELECTORS.checkbox)
@@ -44,23 +46,28 @@ export function selectFilterOption(filter, optionName) {
   submitFilters();
 }
 export function selectProductsOutOfStock() {
-  selectFilterBy("stock")
+  cy.get(PRODUCTS_LIST.filters.filterBy.stock)
+    .click()
     .get(PRODUCTS_LIST.filters.productsOutOfStockOption)
     .click();
   submitFilters();
 }
-function selectFilterBy(filter) {
+export function selectFilterBy(filter) {
   return cy
     .get(PRODUCTS_LIST.showFiltersButton)
     .click()
     .get(PRODUCTS_LIST.filters.filterBy[filter])
     .click();
 }
+
+export function selectChannel(channelSlug) {
+  selectFilterBy("channel");
+  cy.get(getElementByDataTestId(channelSlug)).click();
+}
+
 function submitFilters() {
-  cy.get(BUTTON_SELECTORS.submit)
-    .click()
-    .get(SHARED_ELEMENTS.progressBar)
-    .should("not.exist")
+  cy.get(BUTTON_SELECTORS.submit).click();
+  waitForProgressBarToNotExist()
     .get(PRODUCTS_LIST.emptyProductRow)
     .should("not.exist");
 }

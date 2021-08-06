@@ -29,6 +29,9 @@ export interface AttributeValueListFragment_edges_node {
   file: AttributeValueListFragment_edges_node_file | null;
   reference: string | null;
   richText: any | null;
+  boolean: boolean | null;
+  date: any | null;
+  dateTime: any | null;
 }
 
 export interface AttributeValueListFragment_edges {

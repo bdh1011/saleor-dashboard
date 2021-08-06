@@ -15,8 +15,8 @@ import {
   SortableTableRow
 } from "@saleor/components/SortableTable";
 import TableHead from "@saleor/components/TableHead";
+import { makeStyles } from "@saleor/macaw-ui";
 import { maybe, renderCollection, stopPropagation } from "@saleor/misc";
-import { makeStyles } from "@saleor/theme";
 import { ListActions, ReorderAction } from "@saleor/types";
 import { ProductAttributeType } from "@saleor/types/globalTypes";
 import React from "react";
@@ -58,6 +58,7 @@ interface ProductTypeAttributesProps extends ListActions {
     | ProductTypeDetails_productType_variantAttributes[];
   disabled: boolean;
   type: string;
+  testId?: string;
   onAttributeAssign: (type: ProductAttributeType) => void;
   onAttributeClick: (id: string) => void;
   onAttributeReorder: ReorderAction;
@@ -77,6 +78,7 @@ const ProductTypeAttributes: React.FC<ProductTypeAttributesProps> = props => {
     toggleAll,
     toolbar,
     type,
+    testId,
     onAttributeAssign,
     onAttributeClick,
     onAttributeReorder,
@@ -108,6 +110,7 @@ const ProductTypeAttributes: React.FC<ProductTypeAttributesProps> = props => {
         }
         toolbar={
           <Button
+            data-test-id={testId}
             color="primary"
             variant="text"
             onClick={() => onAttributeAssign(ProductAttributeType[type])}

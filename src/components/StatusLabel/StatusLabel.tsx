@@ -1,8 +1,8 @@
 import { Typography } from "@material-ui/core";
 import grey from "@material-ui/core/colors/grey";
 import yellow from "@material-ui/core/colors/yellow";
+import { makeStyles } from "@saleor/macaw-ui";
 import Label from "@saleor/orders/components/OrderHistory/Label";
-import { makeStyles } from "@saleor/theme";
 import classNames from "classnames";
 import React from "react";
 
@@ -11,7 +11,9 @@ export const useStyles = makeStyles(
     const dot = {
       borderRadius: "100%",
       height: 8,
-      width: 8
+      minHeight: 8,
+      width: 8,
+      minWidth: 8
     };
 
     return {
@@ -56,9 +58,9 @@ export const useStyles = makeStyles(
   { name: "StatusLabel" }
 );
 
-interface StatusLabelProps {
+export interface StatusLabelProps {
   label: string | React.ReactNode;
-  status: "success" | "alert" | "neutral" | "error" | string;
+  status: "success" | "alert" | "neutral" | "error" | undefined;
   subtitle?: string;
   className?: string;
 }

@@ -1,6 +1,12 @@
 import * as attributeRequest from "../../apiRequests/Attribute";
 import * as categoryRequest from "../../apiRequests/Category";
 import * as productRequest from "../../apiRequests/Product";
+import {
+  createTypeProduct,
+  deleteProductType,
+  getProductTypes
+} from "../../apiRequests/productType";
+import { deleteAttributesStartsWith } from "../attributes/attributeUtils";
 
 export function createProductInChannel({
   name,
@@ -16,7 +22,8 @@ export function createProductInChannel({
   visibleInListings = true,
   collectionId = null,
   description = null,
-  trackInventory = true
+  trackInventory = true,
+  weight = 1
 }) {
   let product;
   let variantsList;
@@ -48,7 +55,8 @@ export function createProductInChannel({
         quantityInWarehouse,
         channelId,
         price,
-        trackInventory
+        trackInventory,
+        weight
       });
     })
     .then(variantsResp => {
@@ -65,10 +73,10 @@ export function createTypeAttributeAndCategoryForProduct(
   let productType;
   let category;
   return attributeRequest
-    .createAttribute(name, attributeValues)
+    .createAttribute({ name, attributeValues })
     .then(attributeResp => {
       attribute = attributeResp;
-      productRequest.createTypeProduct({ name, attributeId: attributeResp.id });
+      createTypeProduct({ name, attributeId: attributeResp.id });
     })
     .then(productTypeResp => {
       productType = productTypeResp;
@@ -80,16 +88,9 @@ export function createTypeAttributeAndCategoryForProduct(
     });
 }
 export function deleteProductsStartsWith(startsWith) {
-  cy.deleteElementsStartsWith(
-    productRequest.deleteProductType,
-    productRequest.getProductTypes,
-    startsWith
-  );
-  cy.deleteElementsStartsWith(
-    attributeRequest.deleteAttribute,
-    attributeRequest.getAttributes,
-    startsWith
-  );
+  deleteAttributesStartsWith(startsWith);
+  cy.deleteElementsStartsWith(deleteProductType, getProductTypes, startsWith);
+  deleteAttributesStartsWith(startsWith);
   cy.deleteElementsStartsWith(
     categoryRequest.deleteCategory,
     categoryRequest.getCategories,

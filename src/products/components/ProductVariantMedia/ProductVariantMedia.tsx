@@ -2,7 +2,7 @@ import { Button, Card, CardContent, Typography } from "@material-ui/core";
 import CardTitle from "@saleor/components/CardTitle";
 import Skeleton from "@saleor/components/Skeleton";
 import { ProductMediaFragment } from "@saleor/fragments/types/ProductMediaFragment";
-import { makeStyles } from "@saleor/theme";
+import { makeStyles } from "@saleor/macaw-ui";
 import React from "react";
 import { defineMessages, useIntl } from "react-intl";
 
@@ -32,7 +32,6 @@ const useStyles = makeStyles(
       gridColumnEnd: "span 4"
     },
     image: {
-      height: "100%",
       objectFit: "contain",
       width: "100%"
     },

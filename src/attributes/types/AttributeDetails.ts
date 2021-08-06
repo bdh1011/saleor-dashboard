@@ -43,6 +43,9 @@ export interface AttributeDetails_attribute_choices_edges_node {
   file: AttributeDetails_attribute_choices_edges_node_file | null;
   reference: string | null;
   richText: any | null;
+  boolean: boolean | null;
+  date: any | null;
+  dateTime: any | null;
 }
 
 export interface AttributeDetails_attribute_choices_edges {
@@ -67,10 +70,10 @@ export interface AttributeDetails_attribute {
   filterableInDashboard: boolean;
   filterableInStorefront: boolean;
   unit: MeasurementUnitsEnum | null;
+  inputType: AttributeInputTypeEnum | null;
   metadata: (AttributeDetails_attribute_metadata | null)[];
   privateMetadata: (AttributeDetails_attribute_privateMetadata | null)[];
   availableInGrid: boolean;
-  inputType: AttributeInputTypeEnum | null;
   entityType: AttributeEntityTypeEnum | null;
   storefrontSearchPosition: number;
   valueRequired: boolean;

@@ -9,7 +9,7 @@ import Add from "@material-ui/icons/Add";
 import useElementScroll, {
   isScrolledToBottom
 } from "@saleor/hooks/useElementScroll";
-import { makeStyles } from "@saleor/theme";
+import { makeStyles } from "@saleor/macaw-ui";
 import { FetchMoreProps } from "@saleor/types";
 import classNames from "classnames";
 import { GetItemPropsOptions } from "downshift";
@@ -23,9 +23,12 @@ const menuItemHeight = 46;
 const maxMenuItems = 5;
 const offset = 24;
 
-export interface SingleAutocompleteChoiceType {
+export type ChoiceValue = string;
+export interface SingleAutocompleteChoiceType<
+  T extends ChoiceValue = ChoiceValue
+> {
   label: string;
-  value: any;
+  value: T;
 }
 export interface SingleAutocompleteActionType {
   label: string;
@@ -73,7 +76,9 @@ const useStyles = makeStyles(
       width: "100%"
     },
     content: {
-      maxHeight: menuItemHeight * maxMenuItems + theme.spacing(2),
+      maxHeight: `calc(${menuItemHeight * maxMenuItems}px + ${theme.spacing(
+        2
+      )})`,
       overflow: "scroll",
       padding: 8
     },
@@ -303,7 +308,7 @@ const SingleAutocompleteSelectFieldContent: React.FC<SingleAutocompleteSelectFie
         <div className={classes.arrowContainer}>
           <div
             className={classNames(classes.arrowInnerContainer, {
-              // Needs to be explicitely compared to false because
+              // Needs to be explicitly compared to false because
               // scrolledToBottom can be either true, false or undefined
               [classes.hide]: scrolledToBottom !== false
             })}

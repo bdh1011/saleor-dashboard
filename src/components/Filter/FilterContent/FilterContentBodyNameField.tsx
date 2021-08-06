@@ -1,5 +1,5 @@
 import { Checkbox, FormControlLabel } from "@material-ui/core";
-import { makeStyles } from "@saleor/theme";
+import { makeStyles } from "@saleor/macaw-ui";
 import React from "react";
 
 import { FilterReducerAction } from "../reducer";
@@ -43,6 +43,7 @@ const FilterContentBodyNameField: React.FC<FilterContentBodyNameFieldProps> = ({
           />
         }
         label={filter.label}
+        onClick={event => event.stopPropagation()}
         onChange={() =>
           onFilterPropertyChange({
             payload: {

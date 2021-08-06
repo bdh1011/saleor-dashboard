@@ -1,4 +1,4 @@
-import { makeStyles } from "@saleor/theme";
+import { makeStyles } from "@saleor/macaw-ui";
 import classNames from "classnames";
 import React from "react";
 
@@ -11,7 +11,7 @@ const useStyles = makeStyles(
       }
     },
     block: {
-      [theme.breakpoints.down("sm")]: {
+      [theme.breakpoints.down("xs")]: {
         "&&": {
           display: "block"
         }
@@ -22,9 +22,9 @@ const useStyles = makeStyles(
     },
     menuButton: {
       flex: "0 0 auto",
-      marginLeft: -theme.spacing(2),
+      marginLeft: theme.spacing(-2),
       marginRight: theme.spacing(3),
-      marginTop: -theme.spacing(2)
+      marginTop: theme.spacing(-2)
     },
     root: {
       alignItems: "center",

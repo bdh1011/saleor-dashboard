@@ -1,9 +1,7 @@
 import { MenuItem, Select } from "@material-ui/core";
-import { makeStyles } from "@saleor/theme";
+import { makeStyles } from "@saleor/macaw-ui";
 import React from "react";
 import { FormattedMessage } from "react-intl";
-
-import { ListSettings } from "../../types";
 
 const useStyles = makeStyles(
   theme => ({
@@ -34,14 +32,14 @@ const useStyles = makeStyles(
 interface RowNumberSelectProps {
   choices: number[];
   className?: string;
-  settings: ListSettings;
-  onChange(key: keyof ListSettings, value: any);
+  rowNumber: number;
+  onChange(value: number);
 }
 
 const RowNumberSelect: React.FC<RowNumberSelectProps> = ({
   className,
   choices,
-  settings,
+  rowNumber,
   onChange
 }) => {
   const classes = useStyles({});
@@ -54,8 +52,8 @@ const RowNumberSelect: React.FC<RowNumberSelectProps> = ({
       <Select
         data-test-id="rowNumberSelect"
         className={classes.select}
-        value={settings.rowNumber}
-        onChange={event => onChange("rowNumber", event.target.value)}
+        value={rowNumber}
+        onChange={event => onChange(event.target.value as number)}
       >
         {choices.length > 0 &&
           choices.map(choice => (

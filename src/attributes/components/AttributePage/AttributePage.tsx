@@ -1,6 +1,5 @@
 import { AttributeDetails_attribute_choices } from "@saleor/attributes/types/AttributeDetails";
 import { ATTRIBUTE_TYPES_WITH_DEDICATED_VALUES } from "@saleor/attributes/utils/data";
-import AppHeader from "@saleor/components/AppHeader";
 import CardSpacer from "@saleor/components/CardSpacer";
 import { ConfirmButtonTransitionState } from "@saleor/components/ConfirmButton";
 import Container from "@saleor/components/Container";
@@ -9,10 +8,12 @@ import Grid from "@saleor/components/Grid";
 import Metadata from "@saleor/components/Metadata/Metadata";
 import { MetadataFormData } from "@saleor/components/Metadata/types";
 import PageHeader from "@saleor/components/PageHeader";
-import SaveButtonBar from "@saleor/components/SaveButtonBar";
+import Savebar from "@saleor/components/Savebar";
+import { ListSettingsUpdate } from "@saleor/components/TablePagination";
 import { AttributeDetailsFragment } from "@saleor/fragments/types/AttributeDetailsFragment";
 import { AttributeErrorFragment } from "@saleor/fragments/types/AttributeErrorFragment";
 import { sectionNames } from "@saleor/intl";
+import { Backlink } from "@saleor/macaw-ui";
 import { maybe } from "@saleor/misc";
 import { ListSettings, ReorderAction } from "@saleor/types";
 import {
@@ -46,7 +47,7 @@ export interface AttributePageProps {
   onValueReorder: ReorderAction;
   onValueUpdate: (id: string) => void;
   settings?: ListSettings;
-  onUpdateListSettings?: (key: keyof ListSettings, value: any) => void;
+  onUpdateListSettings?: ListSettingsUpdate;
   pageInfo: {
     hasNextPage: boolean;
     hasPreviousPage: boolean;
@@ -168,9 +169,9 @@ const AttributePage: React.FC<AttributePageProps> = ({
 
         return (
           <Container>
-            <AppHeader onBack={onBack}>
+            <Backlink onClick={onBack}>
               {intl.formatMessage(sectionNames.attributes)}
-            </AppHeader>
+            </Backlink>
             <PageHeader
               title={
                 attribute === null
@@ -233,11 +234,11 @@ const AttributePage: React.FC<AttributePageProps> = ({
                 />
               </div>
             </Grid>
-            <SaveButtonBar
+            <Savebar
               disabled={disabled || !hasChanged}
               state={saveButtonBarState}
               onCancel={onBack}
-              onSave={submit}
+              onSubmit={submit}
               onDelete={attribute === null ? undefined : onDelete}
             />
           </Container>

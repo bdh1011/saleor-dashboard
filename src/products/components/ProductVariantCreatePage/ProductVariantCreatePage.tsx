@@ -3,7 +3,6 @@ import {
   mergeAttributeValues
 } from "@saleor/attributes/utils/data";
 import { ChannelPriceData } from "@saleor/channels/utils";
-import AppHeader from "@saleor/components/AppHeader";
 import AssignAttributeValueDialog from "@saleor/components/AssignAttributeValueDialog";
 import Attributes, {
   AttributeInput,
@@ -15,8 +14,9 @@ import Container from "@saleor/components/Container";
 import Grid from "@saleor/components/Grid";
 import Metadata from "@saleor/components/Metadata";
 import PageHeader from "@saleor/components/PageHeader";
-import SaveButtonBar from "@saleor/components/SaveButtonBar";
+import Savebar from "@saleor/components/Savebar";
 import { ProductErrorWithAttributesFragment } from "@saleor/fragments/types/ProductErrorWithAttributesFragment";
+import { Backlink } from "@saleor/macaw-ui";
 import { SearchAttributeValues_attribute_choices_edges_node } from "@saleor/searches/types/SearchAttributeValues";
 import { SearchPages_search_edges_node } from "@saleor/searches/types/SearchPages";
 import { SearchProducts_search_edges_node } from "@saleor/searches/types/SearchProducts";
@@ -78,10 +78,9 @@ interface ProductVariantCreatePageProps {
   onWarehouseConfigure: () => void;
   assignReferencesAttributeId?: string;
   onAssignReferencesClick: (attribute: AttributeInput) => void;
-  onAttributeFocus: (id: string) => void;
   fetchReferencePages?: (data: string) => void;
   fetchReferenceProducts?: (data: string) => void;
-  fetchAttributeValues: (query: string) => void;
+  fetchAttributeValues: (query: string, attributeId: string) => void;
   fetchMoreReferencePages?: FetchMoreProps;
   fetchMoreReferenceProducts?: FetchMoreProps;
   fetchMoreAttributeValues?: FetchMoreProps;
@@ -105,7 +104,6 @@ const ProductVariantCreatePage: React.FC<ProductVariantCreatePageProps> = ({
   onVariantClick,
   onVariantReorder,
   onWarehouseConfigure,
-  onAttributeFocus,
   assignReferencesAttributeId,
   onAssignReferencesClick,
   fetchReferencePages,
@@ -159,7 +157,7 @@ const ProductVariantCreatePage: React.FC<ProductVariantCreatePageProps> = ({
         submit
       }) => (
         <Container>
-          <AppHeader onBack={onBack}>{product?.name}</AppHeader>
+          <Backlink onClick={onBack}>{product?.name}</Backlink>
           <PageHeader title={header} />
           <Grid variant="inverted">
             <div>
@@ -194,7 +192,6 @@ const ProductVariantCreatePage: React.FC<ProductVariantCreatePageProps> = ({
                 onReferencesReorder={handlers.reorderAttributeValue}
                 fetchAttributeValues={fetchAttributeValues}
                 fetchMoreAttributeValues={fetchMoreAttributeValues}
-                onAttributeFocus={onAttributeFocus}
               />
               <CardSpacer />
               <Attributes
@@ -216,7 +213,6 @@ const ProductVariantCreatePage: React.FC<ProductVariantCreatePageProps> = ({
                 onReferencesReorder={handlers.reorderAttributeValue}
                 fetchAttributeValues={fetchAttributeValues}
                 fetchMoreAttributeValues={fetchMoreAttributeValues}
-                onAttributeFocus={onAttributeFocus}
               />
               <CardSpacer />
               <ProductShipping
@@ -248,15 +244,15 @@ const ProductVariantCreatePage: React.FC<ProductVariantCreatePageProps> = ({
               <Metadata data={data} onChange={handlers.changeMetadata} />
             </div>
           </Grid>
-          <SaveButtonBar
+          <Savebar
             disabled={disabled || formDisabled || !onSubmit || !hasChanged}
             labels={{
-              delete: intl.formatMessage(messages.deleteVariant),
-              save: intl.formatMessage(messages.saveVariant)
+              confirm: intl.formatMessage(messages.saveVariant),
+              delete: intl.formatMessage(messages.deleteVariant)
             }}
             state={saveButtonBarState}
             onCancel={onBack}
-            onSave={submit}
+            onSubmit={submit}
           />
           {canOpenAssignReferencesAttributeDialog && (
             <AssignAttributeValueDialog

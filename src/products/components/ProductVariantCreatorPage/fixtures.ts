@@ -29,7 +29,10 @@ export const attributes = [
           slug: `val-1-${index + 1}`,
           file: null,
           reference: null,
-          richText: null
+          richText: null,
+          boolean: null,
+          date: null,
+          dateTime: null
         }
       }))
   },
@@ -46,7 +49,10 @@ export const attributes = [
           slug: `val-2-${index + 1}`,
           file: null,
           reference: null,
-          richText: null
+          richText: null,
+          boolean: null,
+          date: null,
+          dateTime: null
         }
       }))
   },
@@ -63,7 +69,10 @@ export const attributes = [
           slug: `val-3-${index + 1}`,
           file: null,
           reference: null,
-          richText: null
+          richText: null,
+          boolean: null,
+          date: null,
+          dateTime: null
         }
       }))
   },
@@ -80,7 +89,10 @@ export const attributes = [
           slug: `val-4-${index + 1}`,
           file: null,
           reference: null,
-          richText: null
+          richText: null,
+          boolean: null,
+          date: null,
+          dateTime: null
         }
       }))
   }

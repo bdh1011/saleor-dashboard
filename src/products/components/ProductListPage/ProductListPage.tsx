@@ -1,21 +1,19 @@
 import { Button, Card } from "@material-ui/core";
-import Alert from "@saleor/components/Alert/Alert";
 import CardMenu from "@saleor/components/CardMenu";
 import ColumnPicker, {
   ColumnPickerChoice
 } from "@saleor/components/ColumnPicker";
 import Container from "@saleor/components/Container";
 import FilterBar from "@saleor/components/FilterBar";
+import LimitReachedAlert from "@saleor/components/LimitReachedAlert";
 import PageHeader from "@saleor/components/PageHeader";
 import { RefreshLimits_shop_limits } from "@saleor/components/Shop/types/RefreshLimits";
 import { ProductListColumns } from "@saleor/config";
 import { sectionNames } from "@saleor/intl";
-import {
-  GridAttributes_availableInGrid_edges_node,
-  GridAttributes_grid_edges_node
-} from "@saleor/products/types/GridAttributes";
+import { makeStyles } from "@saleor/macaw-ui";
+import { AvailableInGridAttributes_availableInGrid_edges_node } from "@saleor/products/types/AvailableInGridAttributes";
+import { GridAttributes_grid_edges_node } from "@saleor/products/types/GridAttributes";
 import { ProductList_products_edges_node } from "@saleor/products/types/ProductList";
-import { makeStyles } from "@saleor/theme";
 import {
   ChannelProps,
   FetchMoreProps,
@@ -44,7 +42,7 @@ export interface ProductListPageProps
     SortPage<ProductListUrlSortField>,
     ChannelProps {
   activeAttributeSortId: string;
-  availableInGridAttributes: GridAttributes_availableInGrid_edges_node[];
+  availableInGridAttributes: AvailableInGridAttributes_availableInGrid_edges_node[];
   channelsCount: number;
   currencySymbol: string;
   gridAttributes: GridAttributes_grid_edges_node[];
@@ -57,7 +55,12 @@ export interface ProductListPageProps
 const useStyles = makeStyles(
   theme => ({
     columnPicker: {
-      marginRight: theme.spacing(3)
+      marginRight: theme.spacing(3),
+      [theme.breakpoints.down("xs")]: {
+        "& > button": {
+          width: "100%"
+        }
+      }
     },
     settings: {
       marginRight: theme.spacing(2)
@@ -87,6 +90,7 @@ export const ProductListPage: React.FC<ProductListPageProps> = props => {
     onExport,
     onFetchMore,
     onFilterChange,
+    onFilterAttributeFocus,
     onSearchChange,
     onTabChange,
     onTabDelete,
@@ -157,7 +161,6 @@ export const ProductListPage: React.FC<ProductListPageProps> = props => {
           columns={columns}
           defaultColumns={defaultSettings.columns}
           hasMore={hasMore}
-          loading={loading}
           initialColumns={settings.columns}
           total={
             columns.length -
@@ -180,15 +183,16 @@ export const ProductListPage: React.FC<ProductListPageProps> = props => {
           />
         </Button>
       </PageHeader>
-      <Alert
-        show={limitReached}
-        title={intl.formatMessage({
-          defaultMessage: "SKU limit reached",
-          description: "alert"
-        })}
-      >
-        <FormattedMessage defaultMessage="You have reached your SKU limit, you will be no longer able to add SKUs to your store. If you would like to up your limit, contact your administration staff about raising your limits." />
-      </Alert>
+      {limitReached && (
+        <LimitReachedAlert
+          title={intl.formatMessage({
+            defaultMessage: "SKU limit reached",
+            description: "alert"
+          })}
+        >
+          <FormattedMessage defaultMessage="You have reached your SKU limit, you will be no longer able to add SKUs to your store. If you would like to up your limit, contact your administration staff about raising your limits." />
+        </LimitReachedAlert>
+      )}
       <Card>
         <FilterBar
           currencySymbol={currencySymbol}
@@ -196,6 +200,7 @@ export const ProductListPage: React.FC<ProductListPageProps> = props => {
           initialSearch={initialSearch}
           onAll={onAll}
           onFilterChange={onFilterChange}
+          onFilterAttributeFocus={onFilterAttributeFocus}
           onSearchChange={onSearchChange}
           onTabChange={onTabChange}
           onTabDelete={onTabDelete}

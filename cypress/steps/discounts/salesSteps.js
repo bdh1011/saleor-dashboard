@@ -1,8 +1,10 @@
-import { ASSIGN_PRODUCTS_SELECTORS } from "../../elements/catalog/products/assign-products";
 import { SALES_SELECTORS } from "../../elements/discounts/sales";
+import { ASSIGN_ELEMENTS_SELECTORS } from "../../elements/shared/assign-elements-selectors";
 import { BUTTON_SELECTORS } from "../../elements/shared/button-selectors";
 import { formatDate } from "../../support/format/formatDate";
 import { selectChannelInDetailsPages } from "../channelsSteps";
+import { confirmationMessageShouldDisappear } from "../shared/confirmationMessages";
+import { waitForProgressBarToNotBeVisible } from "../shared/progressBar";
 
 export const discountOptions = {
   PERCENTAGE: SALES_SELECTORS.percentageOption,
@@ -17,8 +19,8 @@ export function createSale({
 }) {
   const todaysDate = formatDate(new Date());
 
-  cy.get(SALES_SELECTORS.createSaleButton)
-    .click()
+  cy.get(SALES_SELECTORS.createSaleButton).click();
+  waitForProgressBarToNotBeVisible()
     .get(SALES_SELECTORS.nameInput)
     .type(saleName)
     .get(discountOption)
@@ -30,18 +32,20 @@ export function createSale({
     .type(todaysDate);
   cy.addAliasToGraphRequest("SaleCreate");
   cy.get(SALES_SELECTORS.saveButton).click();
+  confirmationMessageShouldDisappear();
   cy.wait("@SaleCreate");
 }
 
 export function assignProducts(productName) {
-  cy.get(SALES_SELECTORS.productsTab)
+  waitForProgressBarToNotBeVisible()
+    .get(SALES_SELECTORS.productsTab)
     .click()
     .get(SALES_SELECTORS.assignProducts)
     .click()
-    .get(ASSIGN_PRODUCTS_SELECTORS.searchInput)
+    .get(ASSIGN_ELEMENTS_SELECTORS.searchInput)
     .type(productName);
-  cy.contains(ASSIGN_PRODUCTS_SELECTORS.tableRow, productName)
-    .find(BUTTON_SELECTORS.checkbox)
+  cy.contains(ASSIGN_ELEMENTS_SELECTORS.productTableRow, productName)
+    .find(ASSIGN_ELEMENTS_SELECTORS.checkbox)
     .click();
   cy.addAliasToGraphRequest("SaleCataloguesAdd");
   cy.get(BUTTON_SELECTORS.submit).click();

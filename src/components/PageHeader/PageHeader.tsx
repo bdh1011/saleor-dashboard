@@ -1,6 +1,6 @@
 import { Typography } from "@material-ui/core";
 import { LimitInfoFragment } from "@saleor/fragments/types/LimitInfoFragment";
-import { makeStyles } from "@saleor/theme";
+import { makeStyles } from "@saleor/macaw-ui";
 import React from "react";
 
 import ExtendedPageHeader from "../ExtendedPageHeader";
@@ -14,7 +14,17 @@ const useStyles = makeStyles(
     },
     root: {
       alignItems: "center",
-      display: "flex"
+      display: "flex",
+      [theme.breakpoints.down("xs")]: {
+        flexDirection: "column",
+        alignItems: "flex-start",
+        "& > *": {
+          width: "100%"
+        },
+        "& > *:not(first-child)": {
+          marginTop: theme.spacing(2)
+        }
+      }
     },
     title: {
       [theme.breakpoints.down("sm")]: {

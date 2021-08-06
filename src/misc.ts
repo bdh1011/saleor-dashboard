@@ -3,8 +3,9 @@ import { MutationFunction, MutationResult } from "react-apollo";
 import { defineMessages, IntlShape } from "react-intl";
 import urlJoin from "url-join";
 
-import { ConfirmButtonTransitionState } from "./components/ConfirmButton/ConfirmButton";
+import { ConfirmButtonTransitionState } from "./components/ConfirmButton";
 import { StatusType } from "./components/StatusChip/types";
+import { StatusLabelProps } from "./components/StatusLabel";
 import { APP_MOUNT_URI } from "./config";
 import { AddressType, AddressTypeInput } from "./customers/types";
 import {
@@ -90,7 +91,10 @@ const paymentStatusMessages = defineMessages({
   }
 });
 
-export const transformPaymentStatus = (status: string, intl: IntlShape) => {
+export const transformPaymentStatus = (
+  status: string,
+  intl: IntlShape
+): { localized: string; status: StatusLabelProps["status"] } => {
   switch (status) {
     case PaymentChargeStatusEnum.PARTIALLY_CHARGED:
       return {
@@ -340,6 +344,11 @@ export function stopPropagation(cb: (event?: AnyEvent) => void) {
     event.stopPropagation();
     cb(event);
   };
+}
+
+export interface DateTime {
+  date: string;
+  time: string;
 }
 
 export function joinDateTime(date: string, time?: string) {
